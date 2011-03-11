@@ -1,0 +1,110 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * Hooks and general functions
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function bocu_menu() {
+  $items['admin/config/content/bocu'] = array(
+    'title' => 'BUEditor one click upload',
+    'description' => 'Configure module',
+    'page callback' => 'bocu_config_page',
+    'access arguments' => array('administer site configuration'),
+    'file' => 'bocu.inc',
+    'type' => MENU_NORMAL_ITEM,
+  );
+  
+  $items['admin/config/content/bocu/add'] = array(
+    'title' => 'Add template',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bocu_form_template'),
+    'access arguments' => array('administer site configuration'),
+    'file' => 'bocu.inc',
+    'type' => MENU_LOCAL_ACTION,
+  );
+  
+  $items['admin/config/content/bocu/edit/%bocu_template'] = array(
+    'title' => 'Edit template',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bocu_form_template', 5),
+    'access arguments' => array('administer site configuration'),
+    'file' => 'bocu.inc',
+    'type' => MENU_NORMAL_ITEM,
+  );
+  
+  $items['admin/config/content/bocu/delete/%bocu_template'] = array(
+    'title' => 'Delete template',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bocu_delete_confirm', 5),
+    'access arguments' => array('administer site configuration'),
+    'file' => 'bocu.inc',
+    'type' => MENU_NORMAL_ITEM,
+  );
+  
+  $items['bocu/upload'] = array(
+    'title' => 'Upload file',
+    'page callback' => 'bocu_upload',
+    'access callback' => TRUE,
+    'file' => 'bocu.inc',
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+
+/**
+ * Implements hook_permission().
+ */
+function bocu_permission() {
+  module_load_include('inc', 'bocu');
+  
+  $templates = bocu_templates();
+  $permissions = array();
+  
+  foreach ($templates as $template) {
+    $permissions['upload files use template ' . $template->tid] = array(
+      'title' => t('Upload !extensions files', array('!extensions' => $template->mask)),
+    );
+  }
+  
+  return $permissions;
+}
+
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function bocu_preprocess_page(&$vars) {
+  global $base_path;
+  
+  $scripts = drupal_add_js();
+  $item = menu_get_item();
+  $bueditor_path = drupal_get_path('module', 'bueditor') . '/';
+  $bocu_static_path = drupal_get_path('module', 'bocu') . '/static/';
+  
+  if (isset($scripts[$bueditor_path . 'bueditor.js']) || $item['path'] == 'admin/config/content/bueditor/%') {
+    drupal_add_js($bocu_static_path . 'uploadify/jquery.uploadify.v2.1.4.min.js');
+    drupal_add_js($bocu_static_path . 'uploadify/swfobject.js');
+    drupal_add_js($bocu_static_path . 'bocu.js', array('weight' => 1));
+    drupal_add_js(array('bocu' => array(
+      'phpsessid'  => session_id(),
+      'staticPath' => $base_path . $bocu_static_path,
+      'sizeLimit'  => file_upload_max_size(),
+    )), 'setting');
+    drupal_add_css($bocu_static_path . 'bocu.css');
+  }
+}
+
+
+/**
+ * Return template object by tid
+ */
+function bocu_template_load($tid) {
+  return db_select('bocu_templates', 'bc')->fields('bc')->condition('bc.tid', $tid)->execute()->fetch();
+}

@@ -1,0 +1,186 @@
+# $Id$
+#
+# Russian translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  bocu.inc: n/a
+#  bocu.module: n/a
+#  bocu.info: n/a
+#  static/bocu.js: n/a
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2011-03-11 15:57+0300\n"
+"PO-Revision-Date: 2011-03-11 15:57+0300\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Russian <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=((((n%10)==1)&&((n%100)!=11))?(0):(((((n%10)>=2)&&((n%10)<=4))&&(((n%100)<10)||((n%100)>=20)))?(1):2));\n"
+
+#: bocu.inc:15
+msgid "Mask"
+msgstr "Маска"
+
+#: bocu.inc:15
+msgid "Operations"
+msgstr "Действия"
+
+#: bocu.inc:21
+msgid "edit"
+msgstr "изменить"
+
+#: bocu.inc:22
+msgid "delete"
+msgstr "удалить"
+
+#: bocu.inc:27
+msgid "Templates"
+msgstr "Шаблоны"
+
+#: bocu.inc:52;183 bocu.module:23
+msgid "Add template"
+msgstr "Добавить шаблон"
+
+#: bocu.inc:62
+msgid "File extensions"
+msgstr "Расширения файлов"
+
+#: bocu.inc:63
+msgid "File extensions comma separated, which should be handled within this template. Example: <code>jpg,gif,png</code>"
+msgstr "Список расширений файлов, через запятую, которые нужно обрабатывать в рамках этого шаблона. Например: <code>jpg,gif,png</code>"
+
+#: bocu.inc:71
+msgid "Upload path"
+msgstr "Директория для загрузки"
+
+#: bocu.inc:72
+msgid "Dir name, relative <code>!path</code>, with will upload files. Without the initial and trailing slashes."
+msgstr "Имя директории, относительно <code>!path</code>, в которую будут загружаться файлы. Без начального и завершающего слэша."
+
+#: bocu.inc:81;113
+msgid "Replacement patterns"
+msgstr "Подстановочные шаблоны"
+
+#: bocu.inc:95
+msgid "Template to insert into editor"
+msgstr "Шаблон для вставки в редактор"
+
+#: bocu.inc:104
+msgid "Template to replace selected text"
+msgstr "Шаблон для замены выделенного текста"
+
+#: bocu.inc:120
+msgid "full path to file"
+msgstr "полный путь к файлу"
+
+#: bocu.inc:121
+msgid "file name after upload"
+msgstr "имя файла после загрузки"
+
+#: bocu.inc:122
+msgid "original file name"
+msgstr "оригинальное имя файла"
+
+#: bocu.inc:123
+msgid "file size"
+msgstr "размер файла"
+
+#: bocu.inc:124
+msgid "selected text"
+msgstr "выделенный текст"
+
+#: bocu.inc:131
+msgid "Options for images"
+msgstr "Настройки для изображений"
+
+#: bocu.inc:138
+msgid "Use image style"
+msgstr "Использовать стиль изображения"
+
+#: bocu.inc:145
+msgid "Add link to original image"
+msgstr "Добавлять ссылку на оригинальное изображение"
+
+#: bocu.inc:154
+msgid "Add link only for images whose size exceeds the specified style"
+msgstr "Добавлять ссылку только для изображений чьи размеры превышают указанные в стиле"
+
+#: bocu.inc:164
+msgid "Rename uploaded file"
+msgstr "Переименовывать загружаемый файл"
+
+#: bocu.inc:165
+msgid "Checked, if you want to rename uploded files to current date/time."
+msgstr "Отметьте, если хотите чтобы загружаемым файлам давались уникальные имена (дата и время загрузки)."
+
+#: bocu.inc:171
+msgid "Roles"
+msgstr "Роли"
+
+#: bocu.inc:172
+msgid "Checked roles who can upload files of this type."
+msgstr "Отметьте роли, которые смогут загружать файлы этого типа"
+
+#: bocu.inc:183
+msgid "Save template"
+msgstr "Сохранить шаблон"
+
+#: bocu.inc:217
+msgid "Template saved"
+msgstr "Шаблон сохранён"
+
+#: bocu.inc:217
+msgid "Template added"
+msgstr "Шаблон добавлен"
+
+#: bocu.inc:233
+msgid "Do you really want to delete the template"
+msgstr "Вы действительно хотите удалить шаблон"
+
+#: bocu.inc:245
+msgid "Deleted"
+msgstr "Удалено"
+
+#: bocu.inc:386
+msgid "none"
+msgstr "нет"
+
+#: bocu.module:72
+msgid "Upload !extensions files"
+msgstr "Загружать !extensions файлы"
+
+#: bocu.module:14 bocu.info:0
+msgid "BUEditor one click upload"
+msgstr "BUEditor one click upload"
+
+#: bocu.module:15
+msgid "Configure module"
+msgstr "Настройка модуля"
+
+#: bocu.module:32
+msgid "Edit template"
+msgstr "Редактировать шаблон"
+
+#: bocu.module:41
+msgid "Delete template"
+msgstr "Удалить шаблон"
+
+#: bocu.module:50
+msgid "Upload file"
+msgstr "Загрузить файл"
+
+#: bocu.info:0
+msgid "Button for BUEditor — uploads files in one click"
+msgstr "Кнопка для BUEditor — загрузка файлов в один клик"
+
+#: bocu.info:0
+msgid "Content authoring"
+msgstr "Содержание"
+
+#: static/bocu.js:0
+msgid "Error module initialize."
+msgstr "Ошибка инициализации модуля."

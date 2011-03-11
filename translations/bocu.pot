@@ -1,0 +1,187 @@
+# $Id$
+#
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  bocu.inc: n/a
+#  bocu.module: n/a
+#  bocu.info: n/a
+#  static/bocu.js: n/a
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2011-03-11 15:57+0300\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: bocu.inc:15
+msgid "Mask"
+msgstr ""
+
+#: bocu.inc:15
+msgid "Operations"
+msgstr ""
+
+#: bocu.inc:21
+msgid "edit"
+msgstr ""
+
+#: bocu.inc:22
+msgid "delete"
+msgstr ""
+
+#: bocu.inc:27
+msgid "Templates"
+msgstr ""
+
+#: bocu.inc:52;183 bocu.module:23
+msgid "Add template"
+msgstr ""
+
+#: bocu.inc:62
+msgid "File extensions"
+msgstr ""
+
+#: bocu.inc:63
+msgid "File extensions comma separated, which should be handled within this template. Example: <code>jpg,gif,png</code>"
+msgstr ""
+
+#: bocu.inc:71
+msgid "Upload path"
+msgstr ""
+
+#: bocu.inc:72
+msgid "Dir name, relative <code>!path</code>, with will upload files. Without the initial and trailing slashes."
+msgstr ""
+
+#: bocu.inc:81;113
+msgid "Replacement patterns"
+msgstr ""
+
+#: bocu.inc:95
+msgid "Template to insert into editor"
+msgstr ""
+
+#: bocu.inc:104
+msgid "Template to replace selected text"
+msgstr ""
+
+#: bocu.inc:120
+msgid "full path to file"
+msgstr ""
+
+#: bocu.inc:121
+msgid "file name after upload"
+msgstr ""
+
+#: bocu.inc:122
+msgid "original file name"
+msgstr ""
+
+#: bocu.inc:123
+msgid "file size"
+msgstr ""
+
+#: bocu.inc:124
+msgid "selected text"
+msgstr ""
+
+#: bocu.inc:131
+msgid "Options for images"
+msgstr ""
+
+#: bocu.inc:138
+msgid "Use image style"
+msgstr ""
+
+#: bocu.inc:145
+msgid "Add link to original image"
+msgstr ""
+
+#: bocu.inc:154
+msgid "Add link only for images whose size exceeds the specified style"
+msgstr ""
+
+#: bocu.inc:164
+msgid "Rename uploaded file"
+msgstr ""
+
+#: bocu.inc:165
+msgid "Checked, if you want to rename uploded files to current date/time."
+msgstr ""
+
+#: bocu.inc:171
+msgid "Roles"
+msgstr ""
+
+#: bocu.inc:172
+msgid "Checked roles who can upload files of this type."
+msgstr ""
+
+#: bocu.inc:183
+msgid "Save template"
+msgstr ""
+
+#: bocu.inc:217
+msgid "Template saved"
+msgstr ""
+
+#: bocu.inc:217
+msgid "Template added"
+msgstr ""
+
+#: bocu.inc:233
+msgid "Do you really want to delete the template"
+msgstr ""
+
+#: bocu.inc:245
+msgid "Deleted"
+msgstr ""
+
+#: bocu.inc:386
+msgid "none"
+msgstr ""
+
+#: bocu.module:72
+msgid "Upload !extensions files"
+msgstr ""
+
+#: bocu.module:14 bocu.info:0
+msgid "BUEditor one click upload"
+msgstr ""
+
+#: bocu.module:15
+msgid "Configure module"
+msgstr ""
+
+#: bocu.module:32
+msgid "Edit template"
+msgstr ""
+
+#: bocu.module:41
+msgid "Delete template"
+msgstr ""
+
+#: bocu.module:50
+msgid "Upload file"
+msgstr ""
+
+#: bocu.info:0
+msgid "Button for BUEditor — uploads files in one click"
+msgstr ""
+
+#: bocu.info:0
+msgid "Content authoring"
+msgstr ""
+
+#: static/bocu.js:0
+msgid "Error module initialize."
+msgstr ""
+
