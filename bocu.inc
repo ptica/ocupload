@@ -268,6 +268,9 @@ function bocu_upload() {
       $file = file_save_upload('bocu', array(), $destination);
       
       if ($file) {
+        $file->status = FILE_STATUS_PERMANENT;
+        $file = file_save($file);
+        
         if ($template->rename_file) {   
           $file = file_move($file, $destination . '/' . date('YdmHis') . '.' . $extension_uploaded_file);
         }
