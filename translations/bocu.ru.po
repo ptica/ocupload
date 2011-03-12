@@ -12,8 +12,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-03-11 15:57+0300\n"
-"PO-Revision-Date: 2011-03-11 15:57+0300\n"
+"POT-Creation-Date: 2011-03-12 21:13+0300\n"
+"PO-Revision-Date: 2011-03-12 21:13+0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Russian <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -29,123 +29,152 @@ msgstr "Маска"
 msgid "Operations"
 msgstr "Действия"
 
-#: bocu.inc:21
+#: bocu.inc:19
+msgid "Options"
+msgstr "Параметры"
+
+#: bocu.inc:24
 msgid "edit"
 msgstr "изменить"
 
-#: bocu.inc:22
+#: bocu.inc:25
 msgid "delete"
 msgstr "удалить"
 
-#: bocu.inc:27
+#: bocu.inc:30
 msgid "Templates"
 msgstr "Шаблоны"
 
-#: bocu.inc:52;183 bocu.module:23
+#: bocu.inc:43
+msgid "Delete unused files"
+msgstr "Удалять неиспользуемые файлы"
+
+#: bocu.inc:68;199 bocu.module:23
 msgid "Add template"
 msgstr "Добавить шаблон"
 
-#: bocu.inc:62
+#: bocu.inc:78
 msgid "File extensions"
 msgstr "Расширения файлов"
 
-#: bocu.inc:63
+#: bocu.inc:79
 msgid "File extensions comma separated, which should be handled within this template. Example: <code>jpg,gif,png</code>"
-msgstr "Список расширений файлов, через запятую, которые нужно обрабатывать в рамках этого шаблона. Например: <code>jpg,gif,png</code>"
+msgstr ""
+"Список расширений файлов, через "
+"запятую, которые нужно обрабатывать в "
+"рамках этого шаблона. Например: "
+"<code>jpg,gif,png</code>"
 
-#: bocu.inc:71
+#: bocu.inc:87
 msgid "Upload path"
 msgstr "Директория для загрузки"
 
-#: bocu.inc:72
+#: bocu.inc:88
 msgid "Dir name, relative <code>!path</code>, with will upload files. Without the initial and trailing slashes."
-msgstr "Имя директории, относительно <code>!path</code>, в которую будут загружаться файлы. Без начального и завершающего слэша."
+msgstr ""
+"Имя директории, относительно "
+"<code>!path</code>, в которую будут "
+"загружаться файлы. Без начального и "
+"завершающего слэша."
 
-#: bocu.inc:81;113
+#: bocu.inc:97;129
 msgid "Replacement patterns"
 msgstr "Подстановочные шаблоны"
 
-#: bocu.inc:95
+#: bocu.inc:111
 msgid "Template to insert into editor"
 msgstr "Шаблон для вставки в редактор"
 
-#: bocu.inc:104
+#: bocu.inc:120
 msgid "Template to replace selected text"
 msgstr "Шаблон для замены выделенного текста"
 
-#: bocu.inc:120
+#: bocu.inc:136
 msgid "full path to file"
 msgstr "полный путь к файлу"
 
-#: bocu.inc:121
+#: bocu.inc:137
 msgid "file name after upload"
 msgstr "имя файла после загрузки"
 
-#: bocu.inc:122
+#: bocu.inc:138
 msgid "original file name"
 msgstr "оригинальное имя файла"
 
-#: bocu.inc:123
+#: bocu.inc:139
 msgid "file size"
 msgstr "размер файла"
 
-#: bocu.inc:124
+#: bocu.inc:140
 msgid "selected text"
 msgstr "выделенный текст"
 
-#: bocu.inc:131
+#: bocu.inc:147
 msgid "Options for images"
 msgstr "Настройки для изображений"
 
-#: bocu.inc:138
+#: bocu.inc:154
 msgid "Use image style"
 msgstr "Использовать стиль изображения"
 
-#: bocu.inc:145
+#: bocu.inc:161
 msgid "Add link to original image"
-msgstr "Добавлять ссылку на оригинальное изображение"
+msgstr ""
+"Добавлять ссылку на оригинальное "
+"изображение"
 
-#: bocu.inc:154
+#: bocu.inc:170
 msgid "Add link only for images whose size exceeds the specified style"
-msgstr "Добавлять ссылку только для изображений чьи размеры превышают указанные в стиле"
+msgstr ""
+"Добавлять ссылку только для "
+"изображений чьи размеры превышают "
+"указанные в стиле"
 
-#: bocu.inc:164
+#: bocu.inc:180
 msgid "Rename uploaded file"
 msgstr "Переименовывать загружаемый файл"
 
-#: bocu.inc:165
+#: bocu.inc:181
 msgid "Checked, if you want to rename uploded files to current date/time."
-msgstr "Отметьте, если хотите чтобы загружаемым файлам давались уникальные имена (дата и время загрузки)."
+msgstr ""
+"Отметьте, если хотите чтобы "
+"загружаемым файлам давались "
+"уникальные имена (дата и время "
+"загрузки)."
 
-#: bocu.inc:171
+#: bocu.inc:187
 msgid "Roles"
 msgstr "Роли"
 
-#: bocu.inc:172
+#: bocu.inc:188
 msgid "Checked roles who can upload files of this type."
-msgstr "Отметьте роли, которые смогут загружать файлы этого типа"
+msgstr ""
+"Отметьте роли, которые смогут "
+"загружать файлы этого типа"
 
-#: bocu.inc:183
+#: bocu.inc:199
 msgid "Save template"
 msgstr "Сохранить шаблон"
 
-#: bocu.inc:217
+#: bocu.inc:233
 msgid "Template saved"
 msgstr "Шаблон сохранён"
 
-#: bocu.inc:217
+#: bocu.inc:233
 msgid "Template added"
 msgstr "Шаблон добавлен"
 
-#: bocu.inc:233
+#: bocu.inc:249
 msgid "Do you really want to delete the template"
-msgstr "Вы действительно хотите удалить шаблон"
+msgstr ""
+"Вы действительно хотите удалить "
+"шаблон"
 
-#: bocu.inc:245
+#: bocu.inc:261
 msgid "Deleted"
 msgstr "Удалено"
 
-#: bocu.inc:386
+#: bocu.inc:411
 msgid "none"
 msgstr "нет"
 
@@ -175,7 +204,9 @@ msgstr "Загрузить файл"
 
 #: bocu.info:0
 msgid "Button for BUEditor — uploads files in one click"
-msgstr "Кнопка для BUEditor — загрузка файлов в один клик"
+msgstr ""
+"Кнопка для BUEditor — загрузка файлов в "
+"один клик"
 
 #: bocu.info:0
 msgid "Content authoring"
@@ -184,3 +215,4 @@ msgstr "Содержание"
 #: static/bocu.js:0
 msgid "Error module initialize."
 msgstr "Ошибка инициализации модуля."
+

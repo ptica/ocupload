@@ -16,6 +16,9 @@ function bocu_config_page() {
   $table_data = array();
   $output = '';
   
+  $output .= '<h3>' . t('Options') . '</h3>';
+  $output .= render(drupal_get_form('bocu_form_settings'));
+  
   foreach ($templates as $template) {
     $actions = array(
       l(t('edit'), 'admin/config/content/bocu/edit/' . $template->tid),
@@ -28,6 +31,19 @@ function bocu_config_page() {
   $output .= theme('table', array('header' => $table_header, 'rows' => $table_data));
   
   return $output;
+}
+
+
+/**
+ * Form module settings
+ */
+function bocu_form_settings($form, &$form_state) {
+  $form['bocu_delete_unused_files'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Delete unused files'),
+    '#default_value' => variable_get('bocu_delete_unused_files', 1),
+  );
+  return system_settings_form($form);
 }
 
 
@@ -254,7 +270,7 @@ function bocu_delete_confirm_submit($form, &$form_state) {
  */
 function bocu_upload() {
   global $user, $base_url;
-  
+
   _bocu_auth();
   
   $templates = bocu_templates();
@@ -268,8 +284,10 @@ function bocu_upload() {
       $file = file_save_upload('bocu', array(), $destination);
       
       if ($file) {
-        $file->status = FILE_STATUS_PERMANENT;
-        $file = file_save($file);
+        if (!variable_get('bocu_delete_unused_files', 1)) {
+          $file->status = FILE_STATUS_PERMANENT;
+          $file = file_save($file);
+        }
         
         if ($template->rename_file) {   
           $file = file_move($file, $destination . '/' . date('YdmHis') . '.' . $extension_uploaded_file);
@@ -306,6 +324,10 @@ function bocu_upload() {
           '!filesize'     => format_size($file->destination),
           '!text'         => $selected_text,
         ));
+        
+        if (variable_get('bocu_delete_unused_files', 1)) {
+          $_SESSION['bocu'][$_POST['formId']][$_POST['fieldName']][$file->fid] = $file->filename;
+        }
         
         return _bocu_answer(TRUE, $data);
       }

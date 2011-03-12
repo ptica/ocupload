@@ -103,8 +103,53 @@ function bocu_preprocess_page(&$vars) {
 
 
 /**
+ * Implements hook_form_alter().
+ */
+function bocu_form_alter(&$form, &$form_state, $form_id) {
+  if (variable_get('bocu_delete_unused_files', 1)) {
+    array_unshift($form['#submit'], 'bocu_change_files_status');
+  }
+}
+
+
+/**
+ * Custom form submit.
+ * Change status uploaded files to "permanent".
+ */
+function bocu_change_files_status($form, &$form_state) {
+  if (isset($_SESSION['bocu']) && isset($_SESSION['bocu'][$form['#form_id']])) {
+    foreach ($_SESSION['bocu'][$form['#form_id']] as $field_name => $files) {
+      $field_value = _bocu_field_value_by_html_name($form_state, $field_name);
+      foreach ($files as $fid => $file_name) {
+        if (strpos($field_value, $file_name) !== false) {
+          $file = file_load($fid);
+          $file->status = FILE_STATUS_PERMANENT;
+          file_save($file);
+        }
+      }
+    }
+    unset($_SESSION['bocu'][$form['#form_id']]);
+  }
+}
+
+
+/**
  * Return template object by tid
  */
 function bocu_template_load($tid) {
   return db_select('bocu_templates', 'bc')->fields('bc')->condition('bc.tid', $tid)->execute()->fetch();
+}
+
+
+/**
+ * Return value by input name
+ */
+function _bocu_field_value_by_html_name($form_state, $field_name) {
+  $parts = explode('[', $field_name);
+  $value = &$form_state['values'];
+  foreach ($parts as $part) {
+    $part = rtrim($part, ']');
+    $value = &$value[$part];
+  }
+  return $value;
 }

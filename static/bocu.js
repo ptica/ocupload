@@ -2,7 +2,7 @@ BUE.postprocess.bocu = function(E, $) {
   E.showFileSelectionDialog = function () {
     alert(Drupal.t('Error module initialize.'));
   }
-  
+
   for (var i = 0; i < E.tpl.buttons.length; i++) {
     if (E.tpl.buttons[i][1] == 'js: E.showFileSelectionDialog();') {
       var $button = $('#bue-' + E.index + '-button-' + i);
@@ -31,6 +31,10 @@ BUE.postprocess.bocu = function(E, $) {
           if (selectedText.length > 0) {
             $button.uploadifySettings('scriptData', {selectedText:selectedText});
           }
+          $button.uploadifySettings('scriptData', {
+            formId: $button.parents('form').find('input[name="form_id"]').val(),
+            fieldName: E.textArea.name,
+          });
         },
         'onComplete'   : function(event, ID, fileObj, response, data) {
           if (response.substring(0, 1) != '{') {
