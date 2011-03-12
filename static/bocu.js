@@ -22,6 +22,8 @@ BUE.postprocess.bocu = function(E, $) {
         'auto'         : true,
         'multi'        : true,
         'queueID'      : 'bocu-progress-' + E.index,
+        'fileExt'      : Drupal.settings.bocu.allowedExt,
+        'fileDesc'     : Drupal.settings.bocu.allowedExt,
         'sizeLimit'    : Drupal.settings.bocu.sizeLimit,
         'script'       : Drupal.settings.basePath + 'bocu/upload',
         'scriptData'   : {'phpsessid':Drupal.settings.bocu.phpsessid},

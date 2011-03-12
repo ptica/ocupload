@@ -89,6 +89,14 @@ function bocu_preprocess_page(&$vars) {
   $bocu_static_path = drupal_get_path('module', 'bocu') . '/static/';
   
   if (isset($scripts[$bueditor_path . 'bueditor.js']) || $item['path'] == 'admin/config/content/bueditor/%') {
+    $templates = bocu_templates();
+    $allowed_ext = array();
+    foreach ($templates as $template) {
+      if (user_access('upload files use template ' . $template->tid)) {
+        $allowed_ext = array_merge($allowed_ext, explode(',', $template->mask));
+      }
+    }
+      
     drupal_add_js($bocu_static_path . 'uploadify/jquery.uploadify.v2.1.4.min.js');
     drupal_add_js($bocu_static_path . 'uploadify/swfobject.js');
     drupal_add_js($bocu_static_path . 'bocu.js', array('weight' => 1));
@@ -96,6 +104,7 @@ function bocu_preprocess_page(&$vars) {
       'phpsessid'  => session_id(),
       'staticPath' => $base_path . $bocu_static_path,
       'sizeLimit'  => file_upload_max_size(),
+      'allowedExt' => '*.' . implode(';*.', $allowed_ext) . ';',
     )), 'setting');
     drupal_add_css($bocu_static_path . 'bocu.css');
   }
@@ -138,6 +147,14 @@ function bocu_change_files_status($form, &$form_state) {
  */
 function bocu_template_load($tid) {
   return db_select('bocu_templates', 'bc')->fields('bc')->condition('bc.tid', $tid)->execute()->fetch();
+}
+
+
+/**
+ * Return all templates
+ */
+function bocu_templates() {
+  return db_select('bocu_templates', 'bc')->fields('bc')->execute()->fetchAllAssoc('tid');
 }
 
 

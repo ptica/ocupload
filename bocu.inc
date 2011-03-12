@@ -16,9 +16,6 @@ function bocu_config_page() {
   $table_data = array();
   $output = '';
   
-  $output .= '<h3>' . t('Options') . '</h3>';
-  $output .= render(drupal_get_form('bocu_form_settings'));
-  
   foreach ($templates as $template) {
     $actions = array(
       l(t('edit'), 'admin/config/content/bocu/edit/' . $template->tid),
@@ -29,6 +26,9 @@ function bocu_config_page() {
   
   $output .= '<h3>' . t('Templates') . '</h3>';
   $output .= theme('table', array('header' => $table_header, 'rows' => $table_data));
+  
+  $output .= '<br /><h3>' . t('Options') . '</h3>';
+  $output .= render(drupal_get_form('bocu_form_settings'));
   
   return $output;
 }
@@ -340,14 +340,6 @@ function bocu_upload() {
   }
   
   return _bocu_answer(FALSE, 'This file type can not be upload');
-}
-
-
-/**
- * Return all templates
- */
-function bocu_templates() {
-  return db_select('bocu_templates', 'bc')->fields('bc')->execute()->fetchAll();
 }
 
 
