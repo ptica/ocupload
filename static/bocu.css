@@ -4,7 +4,7 @@
 
 .bue-ui .bocu-button-wrapper object {
   display: inline-block;
-  vertical-align: middle;
+  vertical-align: top;
 }
 
 .uploadifyQueue {

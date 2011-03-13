@@ -2,10 +2,14 @@ BUE.postprocess.bocu = function(E, $) {
   E.showFileSelectionDialog = function () {
     alert(Drupal.t('Error module initialize.'));
   }
-
+  
   for (var i = 0; i < E.tpl.buttons.length; i++) {
     if (E.tpl.buttons[i][1] == 'js: E.showFileSelectionDialog();') {
       var $button = $('#bue-' + E.index + '-button-' + i);
+      if (Drupal.settings.bocu.allowedExt == '*.;') {
+        $button.remove();
+        return;
+      }
       var $wrapper = $('<span class="bocu-button-wrapper bue-button"></span>').css({
         'background-image'    : $button.css('background-image'),
         'background-position' : $button.css('background-position')
@@ -16,7 +20,7 @@ BUE.postprocess.bocu = function(E, $) {
         'uploader'     : '/sites/all/modules/bocu/static/uploadify/uploadify.swf',
         'cancelImg'    : '/sites/all/modules/bocu/static/uploadify/cancel.png',
         'width'        : $button.width(),
-        'height'       : $button.height() - 1,
+        'height'       : $button.height(),
         'hideButton'   : true,
         'wmode'        : 'transparent',
         'auto'         : true,
