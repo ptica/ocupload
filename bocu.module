@@ -76,6 +76,17 @@ function bocu_permission() {
 
 
 /**
+ * Implements hook_help().
+ */
+function bocu_help($path, $arg) {
+  switch ($path) {
+    case 'admin/config/content/bocu':
+      return '<p>' . t('To use module, you need to add a new button to some editor with code !code. Read more info in README.txt', array('!code' => '<code>js: E.showFileSelectionDialog();</code>')) . '</p>';
+  }
+}
+
+
+/**
  * Implements hook_preprocess_page().
  */
 function bocu_preprocess_page(&$vars) {
@@ -113,7 +124,7 @@ function bocu_preprocess_page(&$vars) {
  * Implements hook_form_alter().
  */
 function bocu_form_alter(&$form, &$form_state, $form_id) {
-  if (variable_get('bocu_delete_unused_files', 1)) {
+  if (variable_get('bocu_delete_unused_files', 1) && isset($form['#submit'])) {
     array_unshift($form['#submit'], 'bocu_change_files_status');
   }
 }
