@@ -1,6 +1,4 @@
 <?php
-// $Id$
-
 /**
  * @file
  * Service functions
@@ -344,8 +342,8 @@ function bocu_upload() {
 
 
 /**
-* Add/save template
-*/
+ * Add/save template
+ */
 function bocu_template_save(&$template, $multi = FALSE) {
   if ($multi) {
     return array_map('bocu_template_save', $template);

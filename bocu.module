@@ -1,6 +1,4 @@
 <?php
-// $Id$
-
 /**
  * @file
  * Hooks and general functions
@@ -130,7 +128,7 @@ function bocu_change_files_status($form, &$form_state) {
     foreach ($_SESSION['bocu'][$form['#form_id']] as $field_name => $files) {
       $field_value = _bocu_field_value_by_html_name($form_state, $field_name);
       foreach ($files as $fid => $file_name) {
-        if (strpos($field_value, $file_name) !== false) {
+        if (strpos($field_value, $file_name) !== FALSE) {
           $file = file_load($fid);
           $file->status = FILE_STATUS_PERMANENT;
           file_save($file);
