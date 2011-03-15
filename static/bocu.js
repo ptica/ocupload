@@ -17,8 +17,8 @@ BUE.postprocess.bocu = function(E, $) {
       $button.wrap($wrapper);
       $button.parents('.bue-ui').append('<span id="bocu-progress-' + E.index + '"></span>');
       $button.uploadify({
-        'uploader'     : '/sites/all/modules/bocu/static/uploadify/uploadify.swf',
-        'cancelImg'    : '/sites/all/modules/bocu/static/uploadify/cancel.png',
+        'uploader'     : Drupal.settings.bocu.staticPath + 'uploadify/uploadify.swf',
+        'cancelImg'    : Drupal.settings.bocu.staticPath + 'uploadify/cancel.png',
         'width'        : $button.width(),
         'height'       : $button.height(),
         'hideButton'   : true,
