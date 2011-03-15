@@ -39,7 +39,7 @@ function bocu_form_settings($form, &$form_state) {
   $form['bocu_delete_unused_files'] = array(
     '#type' => 'checkbox',
     '#title' => t('Delete unused files'),
-    '#description' => t('If checked, then files, whose names are not found in the text, will be removed'),
+    '#description' => t('To save space uploaded files that are not used in text will be deleted'),
     '#default_value' => variable_get('bocu_delete_unused_files', 1),
   );
   return system_settings_form($form);
