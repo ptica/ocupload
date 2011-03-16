@@ -387,7 +387,7 @@ function _bocu_get_file_extension($filename) {
 
 /**
  * Return local url by uri
- * Example: "_bocu_get_local_url('public://images/logo.jpg')" returned "/images/logo.jpg"
+ * Example: "_bocu_get_local_url('public://images/logo.jpg')" returned "/sites/all/files/images/logo.jpg"
  */
 function _bocu_get_local_url($uri) {
   return drupal_substr(file_create_url($uri), drupal_strlen($GLOBALS['base_url']));
@@ -408,7 +408,7 @@ function _bocu_get_image_styles() {
 
 
 /**
- * Return TRUE if file extension equal jpg,gif,png или bmp
+ * Return TRUE if file extension equal jpg,gif,png,bmp
  */
 function _bocu_is_image($filename) {
   $extension = _bocu_get_file_extension($filename);
