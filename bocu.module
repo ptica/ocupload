@@ -96,23 +96,23 @@ function bocu_preprocess_page(&$vars) {
   $scripts = drupal_add_js();
   $item = menu_get_item();
   $bueditor_path = drupal_get_path('module', 'bueditor') . '/';
-  $bocu_static_path = drupal_get_path('module', 'bocu') . '/static/';
 
   if (isset($scripts[$bueditor_path . 'bueditor.js']) || $item['path'] == 'admin/config/content/bueditor/%') {
+    $bocu_static_path = drupal_get_path('module', 'bocu') . '/static/';
     $templates = bocu_templates();
     $allowed_ext = array();
+    
     foreach ($templates as $template) {
       if (user_access('upload files use template ' . $template->tid)) {
         $allowed_ext = array_merge($allowed_ext, explode(',', $template->mask));
       }
     }
 
-    drupal_add_js($bocu_static_path . 'uploadify/jquery.uploadify.v2.1.4.min.js');
-    drupal_add_js($bocu_static_path . 'uploadify/swfobject.js');
+    drupal_add_js('sites/all/libraries/uploadify/jquery.uploadify.v2.1.4.min.js');
+    drupal_add_js('sites/all/libraries/uploadify/swfobject.js');
     drupal_add_js($bocu_static_path . 'bocu.js', array('weight' => 1));
     drupal_add_js(array('bocu' => array(
       'phpsessid'  => session_id(),
-      'staticPath' => $base_path . $bocu_static_path,
       'sizeLimit'  => file_upload_max_size(),
       'allowedExt' => '*.' . implode(';*.', $allowed_ext) . ';',
     )), 'setting');
