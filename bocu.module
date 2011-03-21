@@ -126,7 +126,6 @@ function bocu_preprocess_page(&$vars) {
  */
 function bocu_form_alter(&$form, &$form_state, $form_id) {
   if (variable_get('bocu_delete_unused_files', 1) && isset($form['#submit'])) {
-    $form['bocu_files'] = array('#type' => 'value', '#value' => array());
     array_unshift($form['#submit'], 'bocu_change_files_status');
   }
 }
