@@ -325,20 +325,25 @@ function bocu_upload() {
         ));
         
         if (variable_get('bocu_delete_unused_files', 1)) {
-          $_SESSION['bocu'][$_POST['formId']][$_POST['fieldName']][$file->fid] = $file->filename;
+          $cid = 'bocu:' . $_POST['formId'] . ':' . $user->uid;
+          if ($cache = cache_get($cid)) {
+            $files = $cache->data;
+          }
+          $files[$_POST['fieldName']][$file->fid] = $file->filename;
+          cache_set($cid, $files, 'cache', REQUEST_TIME + DRUPAL_MAXIMUM_TEMP_FILE_AGE);
         }
         
         return _bocu_answer(TRUE, $data);
       }
       else {
-        return _bocu_answer(FALSE, 'Error uploading file');
+        return _bocu_answer(FALSE, t('Error uploading file'));
       }
       
       break;
     }
   }
   
-  return _bocu_answer(FALSE, 'This file type can not be upload');
+  return _bocu_answer(FALSE, t('This file type can not be upload'));
 }
 
 
@@ -368,8 +373,10 @@ function bocu_template_delete($tid) {
 function _bocu_auth() {
   $phpsessid = isset($_POST['phpsessid']) ? $_POST['phpsessid'] : FALSE;
   if ($phpsessid && session_id() != $phpsessid) {
+    session_destroy();
     session_id($phpsessid);
     $_COOKIE[session_name()] = $phpsessid;
+    drupal_session_started(FALSE);
     drupal_session_initialize();
   }
 }

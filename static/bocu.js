@@ -55,6 +55,9 @@ BUE.postprocess.bocu = function(E, $) {
           }
           BUE.active.focus();
         },
+        'onError'     : function (event, ID, fileObj, errorObj) {
+          alert(errorObj.type + ' Error: ' + errorObj.info);
+        }
       });
       break;
     }

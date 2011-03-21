@@ -126,6 +126,7 @@ function bocu_preprocess_page(&$vars) {
  */
 function bocu_form_alter(&$form, &$form_state, $form_id) {
   if (variable_get('bocu_delete_unused_files', 1) && isset($form['#submit'])) {
+    $form['bocu_files'] = array('#type' => 'value', '#value' => array());
     array_unshift($form['#submit'], 'bocu_change_files_status');
   }
 }
@@ -136,18 +137,23 @@ function bocu_form_alter(&$form, &$form_state, $form_id) {
  * Change status uploaded files to "permanent".
  */
 function bocu_change_files_status($form, &$form_state) {
-  if (isset($_SESSION['bocu']) && isset($_SESSION['bocu'][$form['#form_id']])) {
-    foreach ($_SESSION['bocu'][$form['#form_id']] as $field_name => $files) {
+  $cid = 'bocu:' . $form_state['values']['form_id'] . ':' . $GLOBALS['user']->uid;
+  if ($cache = cache_get($cid)) {
+    foreach ($cache->data as $field_name => $files) {
       $field_value = _bocu_field_value_by_html_name($form_state, $field_name);
       foreach ($files as $fid => $file_name) {
         if (strpos($field_value, $file_name) !== FALSE) {
           $file = file_load($fid);
           $file->status = FILE_STATUS_PERMANENT;
           file_save($file);
+          unset($cache->data[$field_name][$fid]);
         }
       }
+      if (count($cache->data[$field_name]) == 0) {
+        unset($cache->data[$field_name]);
+      }
     }
-    unset($_SESSION['bocu'][$form['#form_id']]);
+    cache_set($cid, $cache->data, 'cache', (count($cache->data) > 0) ? $cache->expire : CACHE_TEMPORARY);
   }
 }
 
@@ -179,4 +185,18 @@ function _bocu_field_value_by_html_name($form_state, $field_name) {
     $value = &$value[$part];
   }
   return $value;
+}
+
+
+/**
+ * Clear expire session data
+ */
+function _bocu_clear_session_data() {
+  if (isset($_SESSION['bocu'])) {
+    foreach ($_SESSION['bocu'] as $data) {
+      if ($data['timestamp']) {
+          
+      }
+    }
+  }
 }
