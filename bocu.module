@@ -185,17 +185,3 @@ function _bocu_field_value_by_html_name($form_state, $field_name) {
   }
   return $value;
 }
-
-
-/**
- * Clear expire session data
- */
-function _bocu_clear_session_data() {
-  if (isset($_SESSION['bocu'])) {
-    foreach ($_SESSION['bocu'] as $data) {
-      if ($data['timestamp']) {
-          
-      }
-    }
-  }
-}
