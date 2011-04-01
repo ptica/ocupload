@@ -8,4 +8,4 @@ Install:
    "sites/all/libraries/uploadify/jquery.uploadify.v2.1.4.min.js".
    Drush users can use the command "drush download-uploadify".
 4. Add new button to BUEditor with code: "js: E.showFileSelectionDialog();"
-5. (Optional) Edit templates in admin/config/content/bocu
+5. (Optional) Edit templates in admin/config/content/ocupload
