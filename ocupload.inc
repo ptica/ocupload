@@ -338,7 +338,7 @@ function ocupload_upload() {
       }
       // If upload error
       else {
-        $errors = drupal_get_messages(null, true);
+        $errors = drupal_get_messages(null, TRUE);
         $data = array();
         foreach ($errors as $errorPerType) {
           $data[] = strip_tags(implode("\n\n", $errorPerType));

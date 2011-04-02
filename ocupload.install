@@ -105,7 +105,14 @@ function ocupload_install() {
       'template' => '<a href="!filepath">!filename</a>',
       'template_select' => '<a href="!filepath">!text</a>',
       'rename_file' => 0,
-    )
+    ),
+    array(
+      'mask' => 'webm,mp4,ogv',
+      'path' => 'video',
+      'template' => '<video src="!filepath" width="480" height="390" controls></video>',
+      'template_select' => '<a href="!filepath">!text</a>',
+      'rename_file' => 0,
+    ),
   );
   
   foreach ($templates as $template) {
