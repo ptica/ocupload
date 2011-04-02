@@ -59,7 +59,7 @@ BUE.postprocess.ocupload = function(E, $) {
         },
         // after upload all files
         queue_complete_handler: function() {
-          $('#ocupload-progress-' + E.index).remove();
+          $('#ocupload-progress-' + E.index).html('');
         }
       });
       
