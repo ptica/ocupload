@@ -1,0 +1,10 @@
+name = One Click Upload
+description = Button for BUEditor and CKEditor for quick upload files
+version = 7.x-1.x-dev
+core = 7.x
+package = Content authoring
+configure = admin/config/content/ocupload
+files[] = ocupload.inc
+files[] = ocupload.drush.inc
+files[] = ocupload.install
+files[] = ocupload.module
