@@ -6,14 +6,27 @@ BUE.postprocess.ocupload = function(E, $) {
   for (var i = 0; i < E.tpl.buttons.length; i++) {
     if (E.tpl.buttons[i][1] == 'js: E.showFileSelectionDialog();') {
       var $button = $('#bue-' + E.index + '-button-' + i);
+
       if (Drupal.settings.ocupload.allowedExt == '*.;') {
         $button.remove();
         return;
       }
+
       var $wrapper = $('<span class="ocupload-button-wrapper bue-button"></span>').css({
-        'background-image'    : $button.css('background-image'),
-        'background-position' : $button.css('background-position')
+        width: $button.width(),
+        height: $button.height()
       });
+
+      if ($button.hasClass('bue-sprite-button')) {
+        $wrapper.css({
+          'background-image'    : $button.css('background-image'),
+          'background-position' : $button.css('background-position')
+        })
+      }
+      else {
+        $wrapper.css('background', 'url(' + $button.attr('src') + ') no-repeat center center')
+      }
+
       $button.wrap($wrapper);
       $button.closest('.bue-ui').append('<span id="ocupload-progress-' + E.index + '" class="ocupload-progress"></span>');
       
