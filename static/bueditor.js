@@ -6,6 +6,8 @@ BUE.postprocess.ocupload = function(E, $) {
   for (var i = 0; i < E.tpl.buttons.length; i++) {
     if (E.tpl.buttons[i][1] == 'js: E.showFileSelectionDialog();') {
       var $button = $('#bue-' + E.index + '-button-' + i);
+      var buttonWidth = $button.width() <= 20 ? $button.width() : 20;
+      var buttonHeight = $button.height();
 
       if (Drupal.settings.ocupload.allowedExt == '*.;') {
         $button.remove();
@@ -13,8 +15,8 @@ BUE.postprocess.ocupload = function(E, $) {
       }
 
       var $wrapper = $('<span class="ocupload-button-wrapper bue-button"></span>').css({
-        width: $button.width(),
-        height: $button.height()
+        width: buttonWidth,
+        height: buttonHeight
       });
 
       if ($button.hasClass('bue-sprite-button')) {
@@ -40,8 +42,8 @@ BUE.postprocess.ocupload = function(E, $) {
         file_upload_limit      : 0,
         prevent_swf_caching    : false,
         button_window_mode     : SWFUpload.WINDOW_MODE.TRANSPARENT,
-        button_width           : $button.width() <= 20 ? $button.width() : 20,
-        button_height          : $button.height(),
+        button_width           : buttonWidth,
+        button_height          : buttonHeight,
         button_cursor          : SWFUpload.CURSOR.HAND,
         file_post_name         : 'files[file]',
         post_params            : {'phpsessid':Drupal.settings.ocupload.phpsessid},
