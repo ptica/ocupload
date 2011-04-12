@@ -48,7 +48,7 @@ BUE.postprocess.ocupload = function(E, $) {
         // after files select
         file_dialog_complete_handler: function() {
           swfu.addPostParam('selectedText', BUE.active.getSelection());
-          swfu.addPostParam('formId', $button.closest('form').find('input[name="form_id"]').val());
+          swfu.addPostParam('formId', $('textarea[name="' + E.textArea.name + '"]').closest('form').find('input[name="form_id"]').val());
           swfu.addPostParam('fieldName', E.textArea.name);
           this.startUpload();
         },
