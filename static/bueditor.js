@@ -40,7 +40,7 @@ BUE.postprocess.ocupload = function(E, $) {
         file_upload_limit      : 0,
         prevent_swf_caching    : false,
         button_window_mode     : SWFUpload.WINDOW_MODE.TRANSPARENT,
-        button_width           : $button.width(),
+        button_width           : $button.width() <= 20 ? $button.width() : 20,
         button_height          : $button.height(),
         button_cursor          : SWFUpload.CURSOR.HAND,
         file_post_name         : 'files[file]',
