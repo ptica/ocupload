@@ -204,7 +204,7 @@ function ocupload_wysiwyg_plugin($editor, $version) {
       'url' => 'http://drupal.org/project/ocupload',
       'path' => drupal_get_path('module', 'ocupload') . '/static',
       'load' => TRUE,
-      'buttons' => array('OCUpload' => t('One Click UPload')),
+      'buttons' => array('OCUpload' => t('One Click Upload')),
     ));
   }
 }
