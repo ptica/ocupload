@@ -42,6 +42,8 @@ to:
 
 6. Click "Save".
 
+7. Clear your browser cache.
+
 
 Integrate to CKEditor with Wysiwyg:
 -----------------------------------
