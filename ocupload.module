@@ -86,14 +86,22 @@ function ocupload_preprocess_html(&$vars) {
   $item = menu_get_item();
   $module_path = drupal_get_path('module', 'ocupload');
   $module_static_path = $module_path . '/static/';
-  $ocupload_use = false;
+  $ocupload_use = FALSE;
 
   if (module_exists('bueditor') && (isset($scripts[drupal_get_path('module', 'bueditor') . '/bueditor.js']) || $item['path'] == 'admin/config/content/bueditor/%')) {
     drupal_add_js($module_static_path . 'bueditor.js', array('weight' => 1));
-    $ocupload_use = true;
+    $ocupload_use = TRUE;
   }
   else if (module_exists('ckeditor') && isset($scripts[ckeditor_path() . '/ckeditor.js'])) {
-    $ocupload_use = true;
+    $ocupload_use = TRUE;
+  }
+  else if (module_exists('wysiwyg')) {
+    foreach ($scripts['settings']['data'] as $data) {
+      if (isset($data['wysiwyg']['configs']['ckeditor'])) {
+        $ocupload_use = TRUE;
+        break;
+      }
+    }
   }
 
   if ($ocupload_use) {
@@ -184,4 +192,19 @@ function _ocupload_field_value_by_html_name($form_state, $field_name) {
     $value = &$value[$part];
   }
   return $value;
+}
+
+
+/**
+ * Implements of hook_wysiwyg_plugin().
+ */
+function ocupload_wysiwyg_plugin($editor, $version) {
+  if ($editor == 'ckeditor') {
+    return array('OCUpload' => array(
+      'url' => 'http://drupal.org/project/ocupload',
+      'path' => drupal_get_path('module', 'ocupload') . '/static',
+      'load' => TRUE,
+      'buttons' => array('OCUpload' => t('One Click UPload')),
+    ));
+  }
 }
