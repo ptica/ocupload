@@ -7,7 +7,7 @@ Install module:
 3. Download SWFUpload v2.2.0.1 from http://code.google.com/p/swfupload/downloads/list, extract archive in "sites/all/libraries" and rename dir "SWFUpload v2.2.0.1 Core" to "swfupload". After this file "swfupload.js" must be available on path "sites/all/libraries/swfupload/swfupload.js". Drush users can use the command "drush ocupload-dl-library"
 
 
-Integrate to BUEditor:
+Integrate to standalone BUEditor:
 ----------------------
 1. Open BUEditor config page "admin/config/content/bueditor"
 
@@ -18,7 +18,7 @@ Integrate to BUEditor:
 4. Click "Save configuration"
 
 
-Integrate to CKEditor (not Wysiwyg module):
+Integrate to standalone CKEditor (not Wysiwyg module):
 -------------------------------------------
 1. Open in text editor file "sites/all/modules/ckeditor/ckeditor.config.js"
 
@@ -41,3 +41,14 @@ to:
 
 
 6. Click "Save".
+
+
+Integrate to CKEditor with Wysiwyg:
+-----------------------------------
+1. Open Wysiwyg cofig page admin/config/content/wysiwyg.
+
+2. Click  Edit link for your use editor.
+
+3. Open fieldset Buttons and plugins and mark checkbox One Click UPload.
+
+4. Click Save.
