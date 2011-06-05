@@ -59,7 +59,7 @@ to:
 
     ['OCUpload','Image','Flash','Table','HorizontalRule','Smiley','SpecialChar'],
 
-4. Choose checkbox "One Click Upload" in "Plugins" field (after "Toolbar").
+4. Below, in "Plugins" field, choose checkbox "One Click Upload".
 
 5. Click "Save".
 
