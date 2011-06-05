@@ -166,7 +166,7 @@ function ocupload_change_files_status($form, &$form_state) {
 
 
 /**
- * Return template object by tid
+ * Return template object by tid.
  */
 function ocupload_template_load($tid) {
   return db_select('ocupload_templates', 'bc')->fields('bc')->condition('bc.tid', $tid)->execute()->fetch();
@@ -174,7 +174,7 @@ function ocupload_template_load($tid) {
 
 
 /**
- * Return all templates
+ * Return all templates.
  */
 function ocupload_templates() {
   return db_select('ocupload_templates', 'bc')->fields('bc')->execute()->fetchAllAssoc('tid');
@@ -182,7 +182,7 @@ function ocupload_templates() {
 
 
 /**
- * Return value by input name
+ * Return value by input name.
  */
 function _ocupload_field_value_by_html_name($form_state, $field_name) {
   $parts = explode('[', $field_name);
@@ -206,5 +206,53 @@ function ocupload_wysiwyg_plugin($editor, $version) {
       'load' => TRUE,
       'buttons' => array('OCUpload' => t('One Click Upload')),
     ));
+  }
+}
+
+
+/**
+ * Implements of hook_form_FORM_ID_alter().
+ */
+function ocupload_form_ckeditor_admin_profile_form_alter(&$form, $form_state, $profile = NULL) {
+  if (isset($form['appearance']['loadPlugins'])) {
+    $form['appearance']['loadPlugins']['#options'] += array('ocupload' => 'One Click Upload. <em>(' . t('buttons') . ': OCUpload)</em>');
+    if ($profile && isset($profile->settings['loadPlugins']['ocupload'])) {
+      $form['appearance']['loadPlugins']['#default_value'][] = 'ocupload';
+    }
+  
+    array_unshift($form['#submit'], 'ocupload_ckeditor_admin_profile_form_submit_before');
+    $form['#submit'][] = 'ocupload_ckeditor_admin_profile_form_submit_after';
+  }
+}
+
+/**
+ * Form ckeditor_admin_profile_form custom submit callback
+ */
+function ocupload_ckeditor_admin_profile_form_submit_before($form, &$form_state) {
+  if (!empty($form_state['values']['loadPlugins']['ocupload'])) {
+    $GLOBALS['ocupload_checked'] = TRUE;
+    unset($form_state['values']['loadPlugins']['ocupload']);
+  }
+}
+
+/**
+ * Form ckeditor_admin_profile_form custom submit callback
+ */
+function ocupload_ckeditor_admin_profile_form_submit_after($form, $form_state) {
+  if (isset($GLOBALS['ocupload_checked'])) {
+    $profile_name = $form_state['values']['name'];
+    $settings = db_select('ckeditor_settings', 's')
+      ->fields('s', array('settings'))
+      ->condition('name', $profile_name)
+      ->execute()
+      ->fetchField();
+    $settings = unserialize($settings);
+    $settings['loadPlugins']['ocupload'] = array(
+      'name' => 'OCUpload',
+      'desc' => 'One Click Upload',
+      'path' => base_path() . drupal_get_path('module', 'ocupload') . '/static/',
+      'default' => 't',
+    );
+    db_update('ckeditor_settings')->fields(array('settings' => serialize($settings)))->condition('name', $profile_name)->execute();
   }
 }
