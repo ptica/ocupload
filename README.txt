@@ -7,7 +7,7 @@ Install module:
 3. Download SWFUpload v2.2.0.1 from http://code.google.com/p/swfupload/downloads/list, extract archive in "sites/all/libraries" and rename dir "SWFUpload v2.2.0.1 Core" to "swfupload". After this file "swfupload.js" must be available on path "sites/all/libraries/swfupload/swfupload.js". Drush users can use the command "drush ocupload-dl-library"
 
 
-Integrate to standalone BUEditor:
+Integrate to BUEditor:
 ----------------------
 1. Open BUEditor config page "admin/config/content/bueditor"
 
@@ -18,7 +18,7 @@ Integrate to standalone BUEditor:
 4. Click "Save configuration"
 
 
-Integrate to standalone CKEditor (not Wysiwyg module):
+Integrate to standalone CKEditor 7.x-1.1 (not Wysiwyg module):
 -------------------------------------------
 1. Open in text editor file "sites/all/modules/ckeditor/ckeditor.config.js"
 
@@ -43,6 +43,27 @@ to:
 6. Click "Save".
 
 7. Clear your browser cache.
+
+
+Integrate to standalone CKEditor 7.x-1.2+ (not Wysiwyg module):
+-------------------------------------------
+1. Open CKEditor config page "admin/config/content/ckeditor"
+
+2. Click "edit" link for your use editor.
+
+3. Open section "Editor appearance" and replace value in "Toolbar"
+
+    ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar'],
+
+to:
+
+    ['OCUpload','Image','Flash','Table','HorizontalRule','Smiley','SpecialChar'],
+
+4. Choose checkbox "One Click Upload" in "Plugins" field (after "Toolbar").
+
+5. Click "Save".
+
+6. Clear your browser cache.
 
 
 Integrate to CKEditor with Wysiwyg:
