@@ -63,7 +63,7 @@ BUE.postprocess.ocupload = function(E, $) {
           // after upload one file
           upload_success_handler: function(file, serverData) {
             if (serverData.substring(0, 1) != '{') {
-              return alert(serverData);
+              return alert(Drupal.t('Server response came not in JSON format') + ': "' + serverData + '"');
             }
             response = $.parseJSON(serverData);
             if (response.status) {
