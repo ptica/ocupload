@@ -211,11 +211,25 @@ function ocupload_wysiwyg_plugin($editor, $version) {
 
 
 /**
+ * Implements of hook_ckeditor_plugin().
+ */
+function ocupload_ckeditor_plugin() {
+  return array(
+    'ocupload' => array(
+      'name' => 'OCUpload',
+      'desc' => 'One Click Upload <em>(buttons: OCUpload)</em>',
+      'path' => drupal_get_path('module', 'ocupload') . '/static/',
+    )
+  );
+}
+
+
+/**
  * Implements of hook_form_FORM_ID_alter().
  */
 function ocupload_form_ckeditor_admin_profile_form_alter(&$form, $form_state, $profile = NULL) {
-  if (isset($form['appearance']['loadPlugins'])) {
-    $form['appearance']['loadPlugins']['#options'] += array('ocupload' => 'One Click Upload. <em>(' . t('buttons') . ': OCUpload)</em>');
+  if (isset($form['appearance']['loadPlugins']) && !isset($form['appearance']['loadPlugins']['#options']['ocupload'])) {
+    $form['appearance']['loadPlugins']['#options'] += array('ocupload' => 'One Click Upload <em>(' . t('buttons') . ': OCUpload)</em>');
     if ($profile && isset($profile->settings['loadPlugins']['ocupload'])) {
       $form['appearance']['loadPlugins']['#default_value'][] = 'ocupload';
     }
@@ -225,8 +239,9 @@ function ocupload_form_ckeditor_admin_profile_form_alter(&$form, $form_state, $p
   }
 }
 
+
 /**
- * Form ckeditor_admin_profile_form custom submit callback
+ * Form ckeditor_admin_profile_form custom submit callback.
  */
 function ocupload_ckeditor_admin_profile_form_submit_before($form, &$form_state) {
   if (!empty($form_state['values']['loadPlugins']['ocupload'])) {
@@ -235,8 +250,9 @@ function ocupload_ckeditor_admin_profile_form_submit_before($form, &$form_state)
   }
 }
 
+
 /**
- * Form ckeditor_admin_profile_form custom submit callback
+ * Form ckeditor_admin_profile_form custom submit callback.
  */
 function ocupload_ckeditor_admin_profile_form_submit_after($form, $form_state) {
   if (isset($GLOBALS['ocupload_checked'])) {
