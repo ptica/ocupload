@@ -7,7 +7,7 @@ BUE.postprocess.ocupload = function(E, $) {
     if (E.tpl.buttons[i][1] == 'js: E.showFileSelectionDialog();') {
       var $button = $('#bue-' + E.index + '-button-' + i);
       
-      $button.load(function(){
+      $button.load(function() {
         var buttonWidth = $button.width();
         var buttonHeight = $button.height();
 
@@ -47,6 +47,7 @@ BUE.postprocess.ocupload = function(E, $) {
           button_width           : buttonWidth,
           button_height          : buttonHeight,
           button_cursor          : SWFUpload.CURSOR.HAND,
+          button_text            : $button.attr('type') == 'button' ? $button.val() : '',
           file_post_name         : 'files[file]',
           post_params            : {'phpsessid':Drupal.settings.ocupload.phpsessid},
           // after files select
@@ -82,6 +83,10 @@ BUE.postprocess.ocupload = function(E, $) {
         
         $button.parent().mousedown(function(event){ event.stopPropagation(); });
       });
+      
+      if ($button.attr('type') != 'image') {
+        $button.load();
+      }
       
       break;
     }
