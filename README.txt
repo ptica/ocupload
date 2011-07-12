@@ -18,35 +18,8 @@ Integrate to BUEditor:
 4. Click "Save configuration"
 
 
-Integrate to standalone CKEditor 7.x-1.1 (not Wysiwyg module):
--------------------------------------------
-1. Open in text editor file "sites/all/modules/ckeditor/ckeditor.config.js"
-
-2. Add to bottom, but before "};" next code:
-
-    config.extraPlugins += (config.extraPlugins ? ',OCUpload' : 'OCUpload');
-    CKEDITOR.plugins.addExternal('OCUpload', Drupal.settings.ocupload.modulePath + '/static/');
-
-3. Open CKEditor config page "admin/config/content/ckeditor"
-
-4. Click "edit" link for your use editor.
-
-5. Open section "Editor appearance" and replace value in "Toolbar"
-
-    ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar'],
-
-to:
-
-    ['OCUpload','Image','Flash','Table','HorizontalRule','Smiley','SpecialChar'],
-
-
-6. Click "Save".
-
-7. Clear your browser cache.
-
-
 Integrate to standalone CKEditor 7.x-1.2+ (not Wysiwyg module):
--------------------------------------------
+---------------------------------------------------------------
 1. Open CKEditor config page "admin/config/content/ckeditor"
 
 2. Click "edit" link for your use editor.
