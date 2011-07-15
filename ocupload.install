@@ -61,14 +61,21 @@ function ocupload_schema() {
         'default' => 0,
       ),
       'link_only_big' => array(
-        'description' => 'Wrap template link only big images',
+        'description' => '1 - wrap template only big images, 0 - wrap all images',
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'show_in_colorbox' => array(
+        'description' => '1 - show original image in colorbox, 0 - open in new page',
         'type' => 'int',
         'size' => 'tiny',
         'not null' => TRUE,
         'default' => 0,
       ),
       'rename_file' => array(
-        'description' => 'If 1 - change filename to unique number (datetime), 0 - not change',
+        'description' => '1 - change filename to unique number (datetime), 0 - not change',
         'type' => 'int',
         'size' => 'tiny',
         'not null' => TRUE,
@@ -80,7 +87,6 @@ function ocupload_schema() {
   );
   return $shema;
 }
-
 
 /**
  * Implements hook_install().
@@ -97,6 +103,7 @@ function ocupload_install() {
       'image_style' => 'large',
       'link_to_original' => 1,
       'link_only_big' => 1,
+      'show_in_colorbox' => module_exists('colorbox') ? 1 : 0,
       'rename_file' => 1,
     ),
     array(
@@ -123,7 +130,6 @@ function ocupload_install() {
   ocupload_template_save($templates, TRUE);
 }
 
-
 /**
  * Implements hook_uninstall().
  */
@@ -131,4 +137,17 @@ function ocupload_uninstall() {
   foreach (array('ocupload_delete_unused_files') as $name) {
     variable_del($name);
   }
+}
+
+/**
+ * Add new col
+ */
+function ocupload_update_7100() {
+  db_add_field('ocupload_templates', 'show_in_colorbox', array(
+    'description' => '1 - show original image in colorbox, 0 - open in new page',
+    'type' => 'int',
+    'size' => 'tiny',
+    'not null' => TRUE,
+    'default' => 0,
+  ));
 }

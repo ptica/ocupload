@@ -75,7 +75,7 @@ function ocupload_form_template($form, &$form_state, $template = NULL) {
   $form['mask'] = array(
     '#type' => 'textfield',
     '#title' => t('File extensions'),
-    '#description' => t('Comma separated list of file extensions which should be handled within this template. Example: <code>jpg,gif,png</code>'), // Список расширений файлов, через запятую, которые нужно обрабатывать в рамках этого шаблона. Например: <code>jpg,gif,png</code>
+    '#description' => t('Comma separated list of file extensions which should be handled within this template. Example: <code>jpg,gif,png</code>'),
     '#default_value' => $template->mask,
     '#size' => 40,
     '#required' => TRUE,
@@ -84,7 +84,7 @@ function ocupload_form_template($form, &$form_state, $template = NULL) {
   $form['path'] = array(
     '#type' => 'textfield',
     '#title' => t('Upload path'),
-    '#description' => t('Dir name, relative <code>!path</code>, with will upload files. Without the initial and trailing slashes.', array('!path' => $public_path)), // Имя директории, относительно <code>!path</code>, в которую будут загружаться файлы. Без начального и завершающего слэша.
+    '#description' => t('Dir name, relative <code>!path</code>, with will upload files. Without the initial and trailing slashes.', array('!path' => $public_path)),
     '#default_value' => $template->path,
     '#field_prefix' => $public_path . '/',
     '#size' => 22,
@@ -159,25 +159,42 @@ function ocupload_form_template($form, &$form_state, $template = NULL) {
       '#type' => 'checkbox',
       '#title' => t('Add link to original image'),
       '#default_value' => $template->link_to_original,
-      '#states' => array('invisible' => array(
-        'select[name="image_style"]' => array('value' => ''),
-      )),
+      '#states' => array(
+        'invisible' => array(
+          'select[name="image_style"]' => array('value' => ''),
+        )
+      ),
     );
 
     $form['image_settings']['link_only_big'] = array(
       '#type' => 'checkbox',
       '#title' => t('Add link only for those images which size exceeds the size, specified in the style'),
       '#default_value' => $template->link_only_big,
-      '#states' => array('visible' => array(
-        'input[name="link_to_original"]' => array('checked' => TRUE),
-      )),
+      '#states' => array(
+        'visible' => array(
+          'input[name="link_to_original"]' => array('checked' => TRUE),
+        )
+      ),
     );
+    
+    if (module_exists('colorbox')) {
+      $form['image_settings']['show_in_colorbox'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Show original image in Colorbox'),
+        '#default_value' => $template->show_in_colorbox,
+        '#states' => array(
+          'visible' => array(
+            'input[name="link_to_original"]' => array('checked' => TRUE),
+          )
+        ),
+      );
+    }
   }
 
   $form['rename_file'] = array(
     '#type' => 'checkbox',
     '#title' => t('Rename uploaded file'),
-    '#description' => t('Checked, if you want to rename uploded files according to current date/time.'), // Отметьте, если хотите чтобы загружаемым файлам давались уникальные имена (дата и время загрузки).
+    '#description' => t('Checked, if you want to rename uploded files according to current date/time.'),
     '#default_value' => $template->rename_file,
   );
 
@@ -220,6 +237,7 @@ function ocupload_form_template_submit($form, &$form_state) {
       'image_style'      => $form_state['values']['image_style'],
       'link_to_original' => $form_state['values']['link_to_original'],
       'link_only_big'    => $form_state['values']['link_only_big'],
+      'show_in_colorbox' => $form_state['values']['show_in_colorbox'],
     );
   }
   
@@ -313,7 +331,11 @@ function ocupload_upload() {
               }
             }
             if ($wrap_template) {
-              $cur_template = '<a href="' . _ocupload_get_local_url($file->uri) . '" target="_blank">' . $cur_template . '</a>';
+              $attributes = array('href' => _ocupload_get_local_url($file->uri), 'target' => '_blank');
+              if ($template->show_in_colorbox) {
+                $attributes['class'] = 'colorbox-load';
+              }
+              $cur_template = '<a' . drupal_attributes($attributes) . '>' . $cur_template . '</a>';
             }
           }
         }
