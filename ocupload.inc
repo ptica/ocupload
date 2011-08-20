@@ -403,7 +403,7 @@ function ocupload_template_delete($tid) {
 function _ocupload_auth() {
   $phpsessid = isset($_POST['phpsessid']) ? $_POST['phpsessid'] : FALSE;
   if ($phpsessid && session_id() != $phpsessid) {
-    session_destroy();
+    @session_destroy();
     session_id($phpsessid);
     $_COOKIE[session_name()] = $phpsessid;
     drupal_session_started(FALSE);
