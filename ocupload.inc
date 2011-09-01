@@ -237,8 +237,12 @@ function ocupload_form_template_submit($form, &$form_state) {
       'image_style'      => $form_state['values']['image_style'],
       'link_to_original' => $form_state['values']['link_to_original'],
       'link_only_big'    => $form_state['values']['link_only_big'],
-      'show_in_colorbox' => $form_state['values']['show_in_colorbox'],
     );
+    if (module_exists('colorbox')) {
+      $template += array(
+        'show_in_colorbox' => $form_state['values']['show_in_colorbox'],
+      );
+    }
   }
   
   ocupload_template_save($template);
