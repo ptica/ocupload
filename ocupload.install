@@ -28,7 +28,7 @@ function ocupload_schema() {
       'path' => array(
         'description' => 'Upload path',
         'type' => 'varchar',
-        'length' => 50,
+        'length' => 255,
         'not null' => TRUE,
         'default' => '',
       ),
@@ -149,5 +149,18 @@ function ocupload_update_7100() {
     'size' => 'tiny',
     'not null' => TRUE,
     'default' => 0,
+  ));
+}
+
+/**
+ * Change col length
+ */
+function ocupload_update_7101() {
+  db_change_field('ocupload_templates', 'path', 'path', array(
+    'description' => 'Upload path',
+    'type' => 'varchar',
+    'length' => 255,
+    'not null' => TRUE,
+    'default' => '',
   ));
 }
