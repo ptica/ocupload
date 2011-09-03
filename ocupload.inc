@@ -431,7 +431,7 @@ function _ocupload_get_file_extension($filename) {
  * Example: "_ocupload_get_local_url('public://images/logo.jpg')" return "/sites/default/files/images/logo.jpg"
  */
 function _ocupload_get_local_url($uri) {
-  return drupal_substr(file_create_url($uri), drupal_strlen($GLOBALS['base_url']));
+  return drupal_substr(file_create_url($uri), drupal_strlen($GLOBALS['base_root']));
 }
 
 
