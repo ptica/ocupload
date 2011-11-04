@@ -55,7 +55,6 @@ function ocupload_menu() {
   return $items;
 }
 
-
 /**
  * Implements hook_permission().
  */
@@ -74,7 +73,6 @@ function ocupload_permission() {
 
   return $permissions;
 }
-
 
 /**
  * Implements hook_preprocess_html().
@@ -128,7 +126,6 @@ function ocupload_preprocess_html(&$vars) {
   }
 }
 
-
 /**
  * Implements hook_form_alter().
  */
@@ -137,7 +134,6 @@ function ocupload_form_alter(&$form, &$form_state, $form_id) {
     array_unshift($form['#submit'], 'ocupload_change_files_status');
   }
 }
-
 
 /**
  * Custom form submit.
@@ -164,7 +160,6 @@ function ocupload_change_files_status($form, &$form_state) {
   }
 }
 
-
 /**
  * Return template object by tid.
  */
@@ -172,14 +167,12 @@ function ocupload_template_load($tid) {
   return db_select('ocupload_templates', 'bc')->fields('bc')->condition('bc.tid', $tid)->execute()->fetch();
 }
 
-
 /**
  * Return all templates.
  */
 function ocupload_templates() {
   return db_select('ocupload_templates', 'bc')->fields('bc')->execute()->fetchAllAssoc('tid');
 }
-
 
 /**
  * Return value by input name.
@@ -194,21 +187,21 @@ function _ocupload_field_value_by_html_name($form_state, $field_name) {
   return $value;
 }
 
-
 /**
  * Implements of hook_wysiwyg_plugin().
  */
 function ocupload_wysiwyg_plugin($editor, $version) {
   if ($editor == 'ckeditor') {
-    return array('OCUpload' => array(
-      'url' => 'http://drupal.org/project/ocupload',
-      'path' => drupal_get_path('module', 'ocupload') . '/static',
-      'load' => TRUE,
-      'buttons' => array('OCUpload' => t('One Click Upload')),
-    ));
+    return array(
+      'OCUpload' => array(
+        'url' => 'http://drupal.org/project/ocupload',
+        'path' => drupal_get_path('module', 'ocupload') . '/static',
+        'load' => TRUE,
+        'buttons' => array('OCUpload' => t('One Click Upload')),
+      )
+    );
   }
 }
-
 
 /**
  * Implements of hook_ckeditor_plugin().
@@ -217,58 +210,14 @@ function ocupload_ckeditor_plugin() {
   return array(
     'ocupload' => array(
       'name' => 'OCUpload',
-      'desc' => 'One Click Upload <em>(buttons: OCUpload)</em>',
-      'path' => drupal_get_path('module', 'ocupload') . '/static/',
-    )
-  );
-}
-
-
-/**
- * Implements of hook_form_FORM_ID_alter().
- */
-function ocupload_form_ckeditor_admin_profile_form_alter(&$form, $form_state, $profile = NULL) {
-  if (isset($form['appearance']['loadPlugins']) && !isset($form['appearance']['loadPlugins']['#options']['ocupload'])) {
-    $form['appearance']['loadPlugins']['#options'] += array('ocupload' => 'One Click Upload <em>(' . t('buttons') . ': OCUpload)</em>');
-    if ($profile && isset($profile->settings['loadPlugins']['ocupload'])) {
-      $form['appearance']['loadPlugins']['#default_value'][] = 'ocupload';
-    }
-  
-    array_unshift($form['#submit'], 'ocupload_ckeditor_admin_profile_form_submit_before');
-    $form['#submit'][] = 'ocupload_ckeditor_admin_profile_form_submit_after';
-  }
-}
-
-
-/**
- * Form ckeditor_admin_profile_form custom submit callback.
- */
-function ocupload_ckeditor_admin_profile_form_submit_before($form, &$form_state) {
-  if (!empty($form_state['values']['loadPlugins']['ocupload'])) {
-    $GLOBALS['ocupload_checked'] = TRUE;
-    unset($form_state['values']['loadPlugins']['ocupload']);
-  }
-}
-
-
-/**
- * Form ckeditor_admin_profile_form custom submit callback.
- */
-function ocupload_ckeditor_admin_profile_form_submit_after($form, $form_state) {
-  if (isset($GLOBALS['ocupload_checked'])) {
-    $profile_name = $form_state['values']['name'];
-    $settings = db_select('ckeditor_settings', 's')
-      ->fields('s', array('settings'))
-      ->condition('name', $profile_name)
-      ->execute()
-      ->fetchField();
-    $settings = unserialize($settings);
-    $settings['loadPlugins']['ocupload'] = array(
-      'name' => 'OCUpload',
       'desc' => 'One Click Upload',
-      'path' => base_path() . drupal_get_path('module', 'ocupload') . '/static/',
-      'default' => 't',
-    );
-    db_update('ckeditor_settings')->fields(array('settings' => serialize($settings)))->condition('name', $profile_name)->execute();
-  }
+      'path' => drupal_get_path('module', 'ocupload') . '/static/',
+      'buttons' => array(
+        'OCUpload' => array(
+          'icon' => 'button.png',
+          'label' => 'One Click Upload',
+        ),
+      ),
+    ),
+  );
 }

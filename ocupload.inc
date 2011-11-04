@@ -4,7 +4,6 @@
  * Service functions
  */
 
-
 /**
  * Admin page with templates list
  */
@@ -31,7 +30,6 @@ function ocupload_config_page() {
   return $output;
 }
 
-
 /**
  * Form module settings
  */
@@ -44,7 +42,6 @@ function ocupload_form_settings($form, &$form_state) {
   );
   return system_settings_form($form);
 }
-
 
 /**
  * Form add/edit template
@@ -218,7 +215,6 @@ function ocupload_form_template($form, &$form_state, $template = NULL) {
   return $form;
 }
 
-
 /**
  * Form submit
  */
@@ -255,7 +251,6 @@ function ocupload_form_template_submit($form, &$form_state) {
   $form_state['redirect'] = 'admin/config/content/ocupload';
 }
 
-
 /**
  * Confirm form delete teamplate
  */
@@ -272,7 +267,6 @@ function ocupload_delete_confirm($form, &$form_state, $template) {
   );
 }
 
-
 /**
  * Confirm form submit
  */
@@ -284,7 +278,6 @@ function ocupload_delete_confirm_submit($form, &$form_state) {
 
   drupal_goto('admin/config/content/ocupload');
 }
-
 
 /**
  * Upload file
@@ -380,7 +373,6 @@ function ocupload_upload() {
   return _ocupload_answer(FALSE, t('This file type can not be upload'));
 }
 
-
 /**
  * Add/save template
  */
@@ -392,14 +384,12 @@ function ocupload_template_save(&$template, $multi = FALSE) {
   return drupal_write_record('ocupload_templates', $template, !empty($template['tid']) ? 'tid' : array());
 }
 
-
 /**
  * Delete template
  */
 function ocupload_template_delete($tid) {
   db_delete('ocupload_templates')->condition('tid', $tid)->execute();
 }
-
 
 /**
  * Authorize by $_POST data
@@ -415,7 +405,6 @@ function _ocupload_auth() {
   }
 }
 
-
 /**
  * Return file extension
  */
@@ -425,7 +414,6 @@ function _ocupload_get_file_extension($filename) {
   }
 }
 
-
 /**
  * Return local url by uri
  * Example: "_ocupload_get_local_url('public://images/logo.jpg')" return "/sites/default/files/images/logo.jpg"
@@ -433,7 +421,6 @@ function _ocupload_get_file_extension($filename) {
 function _ocupload_get_local_url($uri) {
   return drupal_substr(file_create_url($uri), drupal_strlen($GLOBALS['base_root']));
 }
-
 
 /**
  * Return image styles for use in #options
@@ -447,7 +434,6 @@ function _ocupload_get_image_styles() {
   return $image_style_options;
 }
 
-
 /**
  * Return TRUE if file extension equal jpg,gif,png,bmp
  */
@@ -455,7 +441,6 @@ function _ocupload_is_image($filename) {
   $extension = _ocupload_get_file_extension($filename);
   return in_array($extension, array('jpg', 'jpeg', 'png', 'gif', 'bmp'));
 }
-
 
 /**
  * Return answer in json format
