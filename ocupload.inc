@@ -174,18 +174,17 @@ function ocupload_form_template($form, &$form_state, $template = NULL) {
       ),
     );
     
-    if (module_exists('colorbox')) {
-      $form['image_settings']['show_in_colorbox'] = array(
-        '#type' => 'checkbox',
-        '#title' => t('Show original image in Colorbox'),
-        '#default_value' => $template->show_in_colorbox,
-        '#states' => array(
-          'visible' => array(
-            'input[name="link_to_original"]' => array('checked' => TRUE),
-          )
-        ),
-      );
-    }
+    $form['image_settings']['show_in_colorbox'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Show original image in Colorbox') . (!module_exists('colorbox') ? ' <em>(' . t('install or enable !module', array('!module' => l('Colorbox module', 'http://drupal.org/project/colorbox'))) . ')</em>' : ''),
+      '#default_value' => module_exists('colorbox') ? $template->show_in_colorbox : FALSE,
+      '#disabled' => module_exists('colorbox') ? FALSE : TRUE,
+      '#states' => array(
+        'visible' => array(
+          'input[name="link_to_original"]' => array('checked' => TRUE),
+        )
+      ),
+    );
   }
 
   $form['rename_file'] = array(
@@ -427,7 +426,7 @@ function _ocupload_get_local_url($uri) {
  */
 function _ocupload_get_image_styles() {
   $image_styles = image_styles();
-  $image_style_options = array('' => t('none'));
+  $image_style_options = array('' => '<' . t('none') . '>');
   foreach ($image_styles as $name => $image_style) {
     $image_style_options[$name] = $image_style['name'];
   }
