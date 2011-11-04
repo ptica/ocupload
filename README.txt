@@ -1,36 +1,30 @@
 Install module:
 ---------------
-1. Extract module archive in "sites/all/modules"
+1. Extract module archive in "sites/all/modules".
 
-2. Enable module "One Click Upload"
+2. Enable module "One Click Upload".
 
-3. Download SWFUpload v2.2.0.1 from http://code.google.com/p/swfupload/downloads/list, extract archive in "sites/all/libraries" and rename dir "SWFUpload v2.2.0.1 Core" to "swfupload". After this file "swfupload.js" must be available on path "sites/all/libraries/swfupload/swfupload.js". Drush users can use the command "drush ocupload-dl-library"
+3. Download SWFUpload v2.2.0.1 from http://code.google.com/p/swfupload/downloads/list, extract archive in "sites/all/libraries" and rename dir "SWFUpload v2.2.0.1 Core" to "swfupload". After this file "swfupload.js" must be available on path "sites/all/libraries/swfupload/swfupload.js". Drush users can use the command "drush ocupload-dl-library".
 
 
 Integrate to BUEditor:
 ----------------------
-1. Open BUEditor config page "admin/config/content/bueditor"
+1. Open BUEditor config page "admin/config/content/bueditor".
 
 2. Click "Edit" link for your use editor.
 
-3. Add new button with code: "js: E.showFileSelectionDialog();" (do not change this code!)
+3. Add new button with code: "js: E.showFileSelectionDialog();" (do not change this code!).
 
-4. Click "Save configuration"
+4. Click "Save configuration".
 
 
-Integrate to standalone CKEditor 7.x-1.2+ (not Wysiwyg module):
+Integrate to standalone CKEditor 7.x-1.4+ (not Wysiwyg module):
 ---------------------------------------------------------------
-1. Open CKEditor config page "admin/config/content/ckeditor"
+1. Open CKEditor config page "admin/config/content/ckeditor".
 
 2. Click "edit" link for your use editor.
 
-3. Open section "Editor appearance" and replace value in "Toolbar"
-
-    ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar'],
-
-to:
-
-    ['OCUpload','Image','Flash','Table','HorizontalRule','Smiley','SpecialChar'],
+3. Open section "Editor appearance", go to "Toolbar" field and drag&drop "One Click Upload" icon from "All buttons" to "Used buttons".
 
 4. Below, in "Plugins" field, choose checkbox "One Click Upload".
 
