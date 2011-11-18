@@ -43,7 +43,11 @@ CKEDITOR.plugins.add('OCUpload', {
             // after files select
             file_dialog_complete_handler: function() {
               var selection = CKEDITOR.instances[$textarea.attr('id')].getSelection();
-              var selectedText = selection ? selection.getNative().toString() : '';
+              var selectedText = '';
+              if (selection) {
+                selectedText = !jQuery.browser.msie ? selection.getNative().toString() : selection.getNative().createRange().text;
+              }
+              
               swfu.addPostParam('selectedText', selectedText);
               swfu.addPostParam('formId', $textarea.closest('form').find('input[name="form_id"]').val());
               swfu.addPostParam('fieldName', $textarea.attr('name'));
