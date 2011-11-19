@@ -71,6 +71,7 @@ CKEDITOR.plugins.add('OCUpload', {
                 jQuery(this).remove();
               });
               
+              serverData = jQuery.trim(serverData);
               if (serverData.substring(0, 1) != '{') {
                 return alert(Drupal.t('Server response came not in JSON format') + ': "' + serverData + '"');
               }
