@@ -11,7 +11,7 @@ function ocupload_config_page() {
   $templates = ocupload_templates();
   $table_header = array(t('Mask'), t('Operations'));
   $table_data = array();
-  $output = '';
+  $build = array();
 
   foreach ($templates as $template) {
     $actions = array(
@@ -21,13 +21,18 @@ function ocupload_config_page() {
     $table_data[] = array($template->mask, implode(' | ', $actions));
   }
 
-  $output .= '<h3>' . t('Templates') . '</h3>';
-  $output .= theme('table', array('header' => $table_header, 'rows' => $table_data));
+  $build['templates'] = array(
+    '#theme' => 'table',
+    '#header' => $table_header,
+    '#rows' => $table_data,
+    '#prefix' => '<h3>' . t('Templates') . '</h3>',
+    '#suffix' => '<br />',
+  );
 
-  $output .= '<br /><h3>' . t('Options') . '</h3>';
-  $output .= render(drupal_get_form('ocupload_form_settings'));
+  $build['form'] = drupal_get_form('ocupload_form_settings');
+  $build['form']['#prefix'] = '<h3>' . t('Options') . '</h3>';
 
-  return $output;
+  return $build;
 }
 
 /**
