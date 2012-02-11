@@ -100,7 +100,7 @@ function ocupload_form_template($form, &$form_state, $template = NULL) {
       '#collapsible' => TRUE,
       '#collapsed' => TRUE,
     );
-  
+
     $form['token_help']['help'] = array(
       '#theme' => 'token_tree',
       '#token_types' => array('user'),
@@ -178,7 +178,7 @@ function ocupload_form_template($form, &$form_state, $template = NULL) {
         )
       ),
     );
-    
+
     $form['image_settings']['show_in_colorbox'] = array(
       '#type' => 'checkbox',
       '#title' => t('Show original image in Colorbox') . (!module_exists('colorbox') ? ' <em>(' . t('install or enable !module', array('!module' => l('Colorbox module', 'http://drupal.org/project/colorbox'))) . ')</em>' : ''),
@@ -231,7 +231,7 @@ function ocupload_form_template_submit($form, &$form_state) {
     'template_select' => $form_state['values']['template_select'],
     'rename_file'     => $form_state['values']['rename_file'],
   );
-  
+
   if (module_exists('image')) {
     $template += array(
       'image_style'      => $form_state['values']['image_style'],
@@ -244,13 +244,13 @@ function ocupload_form_template_submit($form, &$form_state) {
       );
     }
   }
-  
+
   ocupload_template_save($template);
-  
+
   foreach ($form_state['values']['roles'] as $rid => $enabled) {
     user_role_change_permissions($rid, array('upload files use template ' . $template['tid'] => $enabled));
   }
-  
+
   drupal_set_message($form_state['values']['tid'] ? t('Template saved') : t('Template added'));
   $form_state['redirect'] = 'admin/config/content/ocupload';
 }
@@ -308,7 +308,7 @@ function ocupload_upload() {
         }
 
         if ($template->rename_file) {   
-          $file = file_move($file, $destination . '/' . date('YdmHis') . '.' . $extension_uploaded_file);
+          $file = file_move($file, $destination . '/' . format_date(REQUEST_TIME, 'custom', 'YdmHis') . '.' . $extension_uploaded_file);
         }
 
         $cur_template = $selected_text ? $template->template_select : $template->template;
@@ -350,11 +350,11 @@ function ocupload_upload() {
         ));
 
         if (variable_get('ocupload_delete_unused_files', 1)) {
-          $cid = 'ocupload:' . $_POST['formId'] . ':' . $user->uid;
+          $cid = 'ocupload:' . check_plain($_POST['formId']) . ':' . $user->uid;
           if ($cache = cache_get($cid)) {
             $files = $cache->data;
           }
-          $files[$_POST['fieldName']][$file->fid] = $file->filename;
+          $files[check_plain($_POST['fieldName'])][$file->fid] = $file->filename;
           cache_set($cid, $files, 'cache', REQUEST_TIME + DRUPAL_MAXIMUM_TEMP_FILE_AGE);
         }
 
@@ -364,8 +364,8 @@ function ocupload_upload() {
       else {
         $errors = drupal_get_messages(null, TRUE);
         $data = array();
-        foreach ($errors as $errorPerType) {
-          $data[] = strip_tags(implode("\n\n", $errorPerType));
+        foreach ($errors as $error_per_type) {
+          $data[] = strip_tags(implode("\n\n", $error_per_type));
         }
         return _ocupload_answer(FALSE, implode("\n\n", $data));
       }
@@ -414,13 +414,14 @@ function _ocupload_auth() {
  */
 function _ocupload_get_file_extension($filename) {
   if (preg_match('#\.([a-zA-Z0-9]+)$#', $filename, $matches)) {
-    return strtolower($matches[1]);
+    return drupal_strtolower($matches[1]);
   }
 }
 
 /**
- * Return local url by uri
- * Example: "_ocupload_get_local_url('public://images/logo.jpg')" return "/sites/default/files/images/logo.jpg"
+ * Return local url by uri. Example:
+ * "_ocupload_get_local_url('public://images/logo.jpg')" return
+ * "/sites/default/files/images/logo.jpg"
  */
 function _ocupload_get_local_url($uri) {
   return drupal_substr(file_create_url($uri), drupal_strlen($GLOBALS['base_root']));

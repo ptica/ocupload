@@ -19,6 +19,7 @@ function ocupload_menu() {
 
   $items['admin/config/content/ocupload/add'] = array(
     'title' => 'Add template',
+    'description' => 'Add template form',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('ocupload_form_template'),
     'access arguments' => array('administer site configuration'),
@@ -28,6 +29,7 @@ function ocupload_menu() {
 
   $items['admin/config/content/ocupload/edit/%ocupload_template'] = array(
     'title' => 'Edit template',
+    'description' => 'Edit template form',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('ocupload_form_template', 5),
     'access arguments' => array('administer site configuration'),
@@ -37,6 +39,7 @@ function ocupload_menu() {
 
   $items['admin/config/content/ocupload/delete/%ocupload_template'] = array(
     'title' => 'Delete template',
+    'description' => 'Delete template confirm form',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('ocupload_delete_confirm', 5),
     'access arguments' => array('administer site configuration'),
@@ -90,10 +93,10 @@ function ocupload_preprocess_html(&$vars) {
     drupal_add_js($module_static_path . 'bueditor.js', array('weight' => 1));
     $ocupload_use = TRUE;
   }
-  else if (module_exists('ckeditor') && isset($scripts[ckeditor_path() . '/ckeditor.js'])) {
+  elseif (module_exists('ckeditor') && isset($scripts[ckeditor_path() . '/ckeditor.js'])) {
     $ocupload_use = TRUE;
   }
-  else if (module_exists('wysiwyg')) {
+  elseif (module_exists('wysiwyg')) {
     foreach ($scripts['settings']['data'] as $data) {
       if (isset($data['wysiwyg']['configs']['ckeditor'])) {
         $ocupload_use = TRUE;
@@ -136,8 +139,7 @@ function ocupload_form_alter(&$form, &$form_state, $form_id) {
 }
 
 /**
- * Custom form submit.
- * Change status uploaded files to "permanent".
+ * Custom form submit. Change status uploaded files to "permanent".
  */
 function ocupload_change_files_status($form, &$form_state) {
   $cid = 'ocupload:' . $form_state['values']['form_id'] . ':' . $GLOBALS['user']->uid;
@@ -188,7 +190,7 @@ function _ocupload_field_value_by_html_name($form_state, $field_name) {
 }
 
 /**
- * Implements of hook_wysiwyg_plugin().
+ * Implements hook_wysiwyg_plugin().
  */
 function ocupload_wysiwyg_plugin($editor, $version) {
   if ($editor == 'ckeditor') {
@@ -204,7 +206,7 @@ function ocupload_wysiwyg_plugin($editor, $version) {
 }
 
 /**
- * Implements of hook_ckeditor_plugin().
+ * Implements hook_ckeditor_plugin().
  */
 function ocupload_ckeditor_plugin() {
   return array(

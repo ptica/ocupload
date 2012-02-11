@@ -121,12 +121,12 @@ function ocupload_install() {
       'rename_file' => 0,
     ),
   );
-  
+
   foreach ($templates as $template) {
     $directory = 'public://' . $template['path'];
     file_prepare_directory($directory, FILE_CREATE_DIRECTORY);
   }
-  
+
   ocupload_template_save($templates, TRUE);
 }
 
