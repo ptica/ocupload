@@ -59,9 +59,11 @@ function ocupload_form_template($form, &$form_state, $template = NULL) {
       'tid' => 0,
       'mask' => '',
       'path' => '',
+      'max_filesize' => 0,
       'template' => '<a href="!filepath">!filename</a>',
       'template_select' => '<a href="!filepath">!text</a>',
       'image_style' => '',
+      'image_style_original' => '',
       'link_to_original' => 0,
       'link_only_big' => 0,
       'rename_file' => 1,
@@ -91,6 +93,15 @@ function ocupload_form_template($form, &$form_state, $template = NULL) {
     '#field_prefix' => $public_path . '/',
     '#size' => 22,
     '#required' => TRUE,
+  );
+  
+  $form['max_filesize'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Maximum upload size'),
+    '#default_value' => $template->max_filesize ? format_size($template->max_filesize) : 0,
+    '#description' => t('Enter a value like "512" (bytes), "80 KB" (kilobytes) or "50 MB" (megabytes) in order to restrict the allowed file size. If left empty the file sizes will be limited only by PHP\'s maximum post and file upload sizes (current limit <strong>%limit</strong>).', array('%limit' => format_size(file_upload_max_size()))) . ' ' . t('Limit except for the user #1') . '.',
+    '#size' => 10,
+    '#element_validate' => array('_ocupload_check_max_filesize'),
   );
 
   if (module_exists('token')) {
@@ -190,6 +201,29 @@ function ocupload_form_template($form, &$form_state, $template = NULL) {
         )
       ),
     );
+    
+    $form['image_settings']['use_image_style_original'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Use image style for original image'),
+      '#default_value' => (bool)$template->image_style_original,
+      '#states' => array(
+        'visible' => array(
+          'input[name="link_to_original"]' => array('checked' => TRUE),
+        )
+      ),
+    );
+    
+    $form['image_settings']['image_style_original'] = array(
+      '#type' => 'select',
+      '#title' => t('Image style for original image'),
+      '#options' => _ocupload_get_image_styles(FALSE),
+      '#default_value' => $template->image_style_original,
+      '#states' => array(
+        'visible' => array(
+          'input[name="use_image_style_original"]' => array('checked' => TRUE),
+        )
+      ),
+    );
   }
 
   $form['rename_file'] = array(
@@ -227,6 +261,7 @@ function ocupload_form_template_submit($form, &$form_state) {
     'tid'             => $form_state['values']['tid'],
     'mask'            => $form_state['values']['mask'],
     'path'            => $form_state['values']['path'],
+    'max_filesize'    => parse_size($form_state['values']['max_filesize']),
     'template'        => $form_state['values']['template'],
     'template_select' => $form_state['values']['template_select'],
     'rename_file'     => $form_state['values']['rename_file'],
@@ -234,9 +269,10 @@ function ocupload_form_template_submit($form, &$form_state) {
 
   if (module_exists('image')) {
     $template += array(
-      'image_style'      => $form_state['values']['image_style'],
-      'link_to_original' => $form_state['values']['link_to_original'],
-      'link_only_big'    => $form_state['values']['link_only_big'],
+      'image_style'          => $form_state['values']['image_style'],
+      'link_to_original'     => $form_state['values']['link_to_original'],
+      'link_only_big'        => $form_state['values']['link_only_big'],
+      'image_style_original' => $form_state['values']['use_image_style_original'] ? $form_state['values']['image_style_original'] : '',
     );
     if (module_exists('colorbox')) {
       $template += array(
@@ -292,89 +328,108 @@ function ocupload_upload() {
   _ocupload_auth();
 
   $templates = ocupload_templates();
+  $template = NULL;
   $extension_uploaded_file = _ocupload_get_file_extension($_FILES['files']['name']['file']);
   $selected_text = !empty($_POST['selectedText']) ? $_POST['selectedText'] : '';
 
-  foreach ($templates as $template) {
-    if (in_array($extension_uploaded_file, explode(',', $template->mask)) && user_access('upload files use template ' . $template->tid)) {
-      $destination = 'public://' . token_replace($template->path, array('user' => $user));
-      file_prepare_directory($destination, FILE_CREATE_DIRECTORY);
-      $file = file_save_upload('file', array('file_validate_extensions' => array(str_replace(',', ' ', $template->mask))), $destination);
-
-      if ($file) {
-        if (!variable_get('ocupload_delete_unused_files', 1)) {
-          $file->status = FILE_STATUS_PERMANENT;
-          $file = file_save($file);
-        }
-
-        if ($template->rename_file) {   
-          $file = file_move($file, $destination . '/' . format_date(REQUEST_TIME, 'custom', 'YdmHis') . '.' . $extension_uploaded_file);
-        }
-
-        $cur_template = $selected_text ? $template->template_select : $template->template;
-        $filepath = $file->uri;
-
-        // If upload image and template image style not empty
-        if ($selected_text == '' && _ocupload_is_image($file->filename) && $template->image_style && module_exists('image')) {
-          $filepath = image_style_path($template->image_style, $file->uri);
-
-          if ($template->link_to_original) {
-            $wrap_template = TRUE;
-            if ($template->link_only_big) {
-              $image_style = image_style_load($template->image_style);
-              $image_style_effects = current($image_style['effects']);
-              $image_style_width = isset($image_style_effects['data']['width']) ? $image_style_effects['data']['width'] : 0;
-              $image_style_height = isset($image_style_effects['data']['height']) ? $image_style_effects['data']['height'] : 0;
-              $image_info = image_get_info($file->uri);
-
-              if (!(($image_style_width > 0 && $image_info['width'] > $image_style_width) || ($image_style_height > 0 && $image_info['height'] > $image_style_height))) {
-                $wrap_template = FALSE;
-              }
-            }
-            if ($wrap_template) {
-              $attributes = array('href' => _ocupload_get_local_url($file->uri), 'target' => '_blank');
-              if ($template->show_in_colorbox) {
-                $attributes['class'] = 'colorbox-load';
-              }
-              $cur_template = '<a' . drupal_attributes($attributes) . '>' . $cur_template . '</a>';
-            }
-          }
-        }
-
-        $data = strtr($cur_template, array(
-          '!filepath'     => _ocupload_get_local_url($filepath),
-          '!filename'     => $file->filename,
-          '!originalname' => basename($file->destination),
-          '!filesize'     => format_size($file->destination),
-          '!text'         => $selected_text,
-        ));
-
-        if (variable_get('ocupload_delete_unused_files', 1)) {
-          $cid = 'ocupload:' . check_plain($_POST['formId']) . ':' . $user->uid;
-          if ($cache = cache_get($cid)) {
-            $files = $cache->data;
-          }
-          $files[check_plain($_POST['fieldName'])][$file->fid] = $file->filename;
-          cache_set($cid, $files, 'cache', REQUEST_TIME + DRUPAL_MAXIMUM_TEMP_FILE_AGE);
-        }
-
-        return _ocupload_answer(TRUE, $data);
-      }
-      // If upload error
-      else {
-        $errors = drupal_get_messages(null, TRUE);
-        $data = array();
-        foreach ($errors as $error_per_type) {
-          $data[] = strip_tags(implode("\n\n", $error_per_type));
-        }
-        return _ocupload_answer(FALSE, implode("\n\n", $data));
-      }
-
+  foreach ($templates as $value) {
+    if (in_array($extension_uploaded_file, explode(',', $value->mask)) && user_access('upload files use template ' . $value->tid)) {
+      $template = $value;
       break;
     }
   }
+  
+  if (!$template) {
+    return _ocupload_answer(FALSE, t('This file type can not be upload'));
+  }
 
-  return _ocupload_answer(FALSE, t('This file type can not be upload'));
+  $validators = array(
+    'file_validate_extensions' => array(str_replace(',', ' ', $template->mask)),
+    'file_validate_size' => array(file_upload_max_size()),
+  );
+  if ($template->max_filesize) {
+    $validators['file_validate_size'][0] = $template->max_filesize;
+  }
+  
+  $destination = 'public://' . token_replace($template->path, array('user' => $user));
+  file_prepare_directory($destination, FILE_CREATE_DIRECTORY);
+  $file = file_save_upload('file', $validators, $destination);
+
+  if ($file) {
+    if (!variable_get('ocupload_delete_unused_files', 1)) {
+      $file->status = FILE_STATUS_PERMANENT;
+      $file = file_save($file);
+    }
+
+    if ($template->rename_file) {   
+      $file = file_move($file, $destination . '/' . format_date(REQUEST_TIME, 'custom', 'YdmHis') . '.' . $extension_uploaded_file);
+    }
+
+    $cur_template = $selected_text ? $template->template_select : $template->template;
+    $filepath = $file->uri;
+
+    // If upload image and template image style not empty
+    if ($selected_text == '' && _ocupload_is_image($file->filename) && $template->image_style && module_exists('image')) {
+      $filepath = image_style_path($template->image_style, $file->uri);
+
+      if ($template->link_to_original) {
+        $wrap_template = TRUE;
+        if ($template->link_only_big) {
+          $image_style = image_style_load($template->image_style);
+          $image_style_effects = current($image_style['effects']);
+          $image_style_width = isset($image_style_effects['data']['width']) ? $image_style_effects['data']['width'] : 0;
+          $image_style_height = isset($image_style_effects['data']['height']) ? $image_style_effects['data']['height'] : 0;
+          $image_info = image_get_info($file->uri);
+
+          if (!(($image_style_width > 0 && $image_info['width'] > $image_style_width) || ($image_style_height > 0 && $image_info['height'] > $image_style_height))) {
+            $wrap_template = FALSE;
+          }
+        }
+        if ($wrap_template) {
+          $original_image_uri = $file->uri;
+          if ($template->image_style_original) {
+            $original_image_uri = image_style_path($template->image_style_original, $original_image_uri);
+          }
+          $attributes = array(
+            'href' => _ocupload_get_local_url($original_image_uri),
+            'target' => '_blank'
+          );
+          if ($template->show_in_colorbox) {
+            $attributes['class'] = 'colorbox-load';
+          }
+          $cur_template = '<a' . drupal_attributes($attributes) . '>' . $cur_template . '</a>';
+        }
+      }
+    }
+
+    $data = strtr($cur_template, array(
+      '!filepath'     => _ocupload_get_local_url($filepath),
+      '!filename'     => $file->filename,
+      '!originalname' => basename($file->destination),
+      '!filesize'     => format_size($file->destination),
+      '!text'         => $selected_text,
+    ));
+
+    if (variable_get('ocupload_delete_unused_files', 1)) {
+      $cid = 'ocupload:' . check_plain($_POST['formId']) . ':' . $user->uid;
+      if ($cache = cache_get($cid)) {
+        $files = $cache->data;
+      }
+      $files[check_plain($_POST['fieldName'])][$file->fid] = $file->filename;
+      cache_set($cid, $files, 'cache', REQUEST_TIME + DRUPAL_MAXIMUM_TEMP_FILE_AGE);
+    }
+
+    return _ocupload_answer(TRUE, $data);
+  }
+  // If upload error
+  else {
+    $errors = drupal_get_messages(null, TRUE);
+    $data = array();
+    foreach ($errors as $error_per_type) {
+      $data[] = strip_tags(implode("\n\n", $error_per_type));
+    }
+    return _ocupload_answer(FALSE, implode("\n\n", $data));
+  }
 }
 
 /**
@@ -413,9 +468,7 @@ function _ocupload_auth() {
  * Return file extension
  */
 function _ocupload_get_file_extension($filename) {
-  if (preg_match('#\.([a-zA-Z0-9]+)$#', $filename, $matches)) {
-    return drupal_strtolower($matches[1]);
-  }
+  return drupal_strtolower(pathinfo($filename, PATHINFO_EXTENSION));
 }
 
 /**
@@ -430,9 +483,9 @@ function _ocupload_get_local_url($uri) {
 /**
  * Return image styles for use in #options
  */
-function _ocupload_get_image_styles() {
+function _ocupload_get_image_styles($add_empty_option = TRUE) {
   $image_styles = image_styles();
-  $image_style_options = array('' => '<' . t('none') . '>');
+  $image_style_options = $add_empty_option ? array('' => '<' . t('none') . '>') : array();
   foreach ($image_styles as $name => $image_style) {
     $image_style_options[$name] = $image_style['name'];
   }
@@ -453,3 +506,14 @@ function _ocupload_is_image($filename) {
 function _ocupload_answer($status, $data) {
   drupal_json_output(array('status' => $status, 'data' => $data));
 }
+
+/**
+ * Element validate callback for the maximum upload size field.
+ * Ensure a size that can be parsed by parse_size() has been entered.
+ */
+function _ocupload_check_max_filesize($element, &$form_state) {
+  if (!empty($element['#value']) && !is_numeric(parse_size($element['#value']))) {
+    form_error($element, t('The "!name" option must contain a valid value. You may either leave the text field empty or enter a string like "512" (bytes), "80 KB" (kilobytes) or "50 MB" (megabytes).', array('!name' => t($element['title']))));
+  }
+}
+

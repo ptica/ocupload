@@ -32,6 +32,13 @@ function ocupload_schema() {
         'not null' => TRUE,
         'default' => '',
       ),
+      'max_filesize' => array(
+        'description' => 'Max filesize in bytes',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
       'template' => array(
         'description' => 'Template',
         'type' => 'varchar',
@@ -49,7 +56,14 @@ function ocupload_schema() {
       'image_style' => array(
         'description' => 'Image style',
         'type' => 'varchar',
-        'length' => 30,
+        'length' => 50,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'image_style_original' => array(
+        'description' => 'Image style for original image',
+        'type' => 'varchar',
+        'length' => 50,
         'not null' => TRUE,
         'default' => '',
       ),
@@ -57,6 +71,7 @@ function ocupload_schema() {
         'description' => 'Wrap template link to original image',
         'type' => 'int',
         'size' => 'tiny',
+        'unsigned' => TRUE,
         'not null' => TRUE,
         'default' => 0,
       ),
@@ -64,6 +79,7 @@ function ocupload_schema() {
         'description' => '1 - wrap template only big images, 0 - wrap all images',
         'type' => 'int',
         'size' => 'tiny',
+        'unsigned' => TRUE,
         'not null' => TRUE,
         'default' => 0,
       ),
@@ -71,6 +87,7 @@ function ocupload_schema() {
         'description' => '1 - show original image in colorbox, 0 - open in new page',
         'type' => 'int',
         'size' => 'tiny',
+        'unsigned' => TRUE,
         'not null' => TRUE,
         'default' => 0,
       ),
@@ -78,6 +95,7 @@ function ocupload_schema() {
         'description' => '1 - change filename to unique number (datetime), 0 - not change',
         'type' => 'int',
         'size' => 'tiny',
+        'unsigned' => TRUE,
         'not null' => TRUE,
         'default' => 1,
       ),
@@ -140,7 +158,7 @@ function ocupload_uninstall() {
 }
 
 /**
- * Add new col
+ * Add new col {ocupload_templates}.show_in_colorbox
  */
 function ocupload_update_7100() {
   db_add_field('ocupload_templates', 'show_in_colorbox', array(
@@ -153,7 +171,7 @@ function ocupload_update_7100() {
 }
 
 /**
- * Change col length
+ * Change col length {ocupload_templates}.path
  */
 function ocupload_update_7101() {
   db_change_field('ocupload_templates', 'path', 'path', array(
@@ -164,3 +182,30 @@ function ocupload_update_7101() {
     'default' => '',
   ));
 }
+
+/**
+ * Add new col {ocupload_templates}.image_style_original
+ */
+function ocupload_update_7102() {
+  db_add_field('ocupload_templates', 'image_style_original', array(
+    'description' => 'Image style for original image',
+    'type' => 'varchar',
+    'length' => 50,
+    'not null' => TRUE,
+    'default' => '',
+  ));
+}
+
+/**
+ * Add new col {ocupload_templates}.max_filesize
+ */
+function ocupload_update_7103() {
+  db_add_field('ocupload_templates', 'max_filesize', array(
+    'description' => 'Max filesize in bytes',
+    'type' => 'int',
+    'unsigned' => TRUE,
+    'not null' => TRUE,
+    'default' => 0,
+  ));
+}
+
