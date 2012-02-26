@@ -66,6 +66,7 @@ function ocupload_form_template($form, &$form_state, $template = NULL) {
       'image_style_original' => '',
       'link_to_original' => 0,
       'link_only_big' => 0,
+      'max_dimensions' => '',
       'rename_file' => 1,
     );
     drupal_set_title(t('Add template'));
@@ -224,6 +225,14 @@ function ocupload_form_template($form, &$form_state, $template = NULL) {
         )
       ),
     );
+    
+    $form['image_settings']['max_dimensions'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Maximum image resolution',
+      '#description' => t('The maximum allowed image size expressed as WIDTHxHEIGHT (e.g. 640x480). Leave blank for no restriction. If a larger image is uploaded, it will be resized to reflect the given width and height. Resizing images on upload will cause the loss of <a href="http://en.wikipedia.org/wiki/Exchangeable_image_file_format">EXIF data</a> in the image.'),
+      '#default_value' => $template->max_dimensions,
+      '#size' => 10,
+    );
   }
 
   $form['rename_file'] = array(
@@ -273,6 +282,7 @@ function ocupload_form_template_submit($form, &$form_state) {
       'link_to_original'     => $form_state['values']['link_to_original'],
       'link_only_big'        => $form_state['values']['link_only_big'],
       'image_style_original' => $form_state['values']['use_image_style_original'] ? $form_state['values']['image_style_original'] : '',
+      'max_dimensions'       => $form_state['values']['max_dimensions'],
     );
     if (module_exists('colorbox')) {
       $template += array(
@@ -349,6 +359,12 @@ function ocupload_upload() {
   );
   if ($template->max_filesize) {
     $validators['file_validate_size'][0] = $template->max_filesize;
+  }
+  if (_ocupload_is_image($_FILES['files']['name']['file'])) {
+    $validators['file_validate_is_image'] = array();
+    if ($template->max_dimensions) {
+      $validators['file_validate_image_resolution'] = array($template->max_dimensions);
+    }
   }
   
   $destination = 'public://' . token_replace($template->path, array('user' => $user));

@@ -91,6 +91,13 @@ function ocupload_schema() {
         'not null' => TRUE,
         'default' => 0,
       ),
+      'max_dimensions' => array(
+        'description' => 'Maximum image resolution',
+        'type' => 'varchar',
+        'length' => 20,
+        'not null' => TRUE,
+        'default' => '',
+      ),
       'rename_file' => array(
         'description' => '1 - change filename to unique number (datetime), 0 - not change',
         'type' => 'int',
@@ -206,6 +213,19 @@ function ocupload_update_7103() {
     'unsigned' => TRUE,
     'not null' => TRUE,
     'default' => 0,
+  ));
+}
+
+/**
+ * Add new col {ocupload_templates}.max_dimensions
+ */
+function ocupload_update_7104() {
+  db_add_field('ocupload_templates', 'max_dimensions', array(
+    'description' => 'Maximum image resolution',
+    'type' => 'varchar',
+    'length' => 20,
+    'not null' => TRUE,
+    'default' => '',
   ));
 }
 
