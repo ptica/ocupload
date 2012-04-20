@@ -176,7 +176,7 @@ function ocupload_form_template($form, &$form_state, $template = NULL) {
       '#states' => array(
         'invisible' => array(
           'select[name="image_style"]' => array('value' => ''),
-        )
+        ),
       ),
     );
 
@@ -187,7 +187,7 @@ function ocupload_form_template($form, &$form_state, $template = NULL) {
       '#states' => array(
         'visible' => array(
           'input[name="link_to_original"]' => array('checked' => TRUE),
-        )
+        ),
       ),
     );
 
@@ -222,7 +222,7 @@ function ocupload_form_template($form, &$form_state, $template = NULL) {
       '#states' => array(
         'visible' => array(
           'input[name="use_image_style_original"]' => array('checked' => TRUE),
-        )
+        ),
       ),
     );
     
