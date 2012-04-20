@@ -377,7 +377,7 @@ function ocupload_upload() {
       $file = file_save($file);
     }
 
-    if ($template->rename_file) {   
+    if ($template->rename_file) {
       $file = file_move($file, $destination . '/' . format_date(REQUEST_TIME, 'custom', 'YdmHis') . '.' . $extension_uploaded_file);
     }
 
@@ -411,7 +411,7 @@ function ocupload_upload() {
             'target' => '_blank'
           );
           if ($template->show_in_colorbox) {
-            $attributes['class'] = 'colorbox-load';
+            $attributes['class'] = 'colorbox';
           }
           $cur_template = '<a' . drupal_attributes($attributes) . '>' . $cur_template . '</a>';
         }
