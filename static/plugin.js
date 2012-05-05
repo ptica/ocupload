@@ -35,6 +35,7 @@ CKEDITOR.plugins.add('OCUpload', {
             file_types_description   : Drupal.t('Files'),
             file_upload_limit        : 0,
             prevent_swf_caching      : false,
+            button_image_url         : Drupal.settings.ocupload.modulePath + '/static/clear.gif',
             button_window_mode       : SWFUpload.WINDOW_MODE.TRANSPARENT,
             button_width             : 20,
             button_height            : 20,
