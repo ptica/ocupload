@@ -79,6 +79,13 @@ BUE.postprocess.ocupload = function(E, $) {
           // after upload all files
           queue_complete_handler: function() {
             $('#ocupload-progress-' + E.index).html('');
+          },
+          // error during upload
+          upload_error_handler: function(file, errorCode, message) {
+            alert('Error ' + errorCode + ': ' + message);
+            jQuery('#queue-' + file.id).hide('fast', function(){
+              jQuery(this).remove();
+            });
           }
         });
         

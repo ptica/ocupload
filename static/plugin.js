@@ -87,6 +87,13 @@ CKEDITOR.plugins.add('OCUpload', {
                 alert(response.data);
               }
             },
+            // error during upload
+            upload_error_handler: function(file, errorCode, message) {
+              alert('Error ' + errorCode + ': ' + message);
+              jQuery('#queue-' + file.id).hide('fast', function(){
+                jQuery(this).remove();
+              });
+            }
         });
 
         $this.mousedown(function(event){ event.stopPropagation(); });
