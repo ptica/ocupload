@@ -20,7 +20,7 @@ CKEDITOR.plugins.add('OCUpload', {
         editor.getCommand('OCUpload').setState(CKEDITOR.TRISTATE_DISABLED);
         return;
       }
-      
+
       jQuery('.cke_button_OCUpload:not(.ocupload-processed)').each(function(i) {
         var $this = jQuery(this);
         var $textarea = $this.parents('.form-item').find('textarea');
@@ -48,7 +48,7 @@ CKEDITOR.plugins.add('OCUpload', {
               if (selection) {
                 selectedText = !jQuery.browser.msie ? selection.getNative().toString() : selection.getNative().createRange().text;
               }
-              
+
               swfu.addPostParam('selectedText', selectedText);
               swfu.addPostParam('formId', $textarea.closest('form').find('input[name="form_id"]').val());
               swfu.addPostParam('fieldName', $textarea.attr('name'));
@@ -71,7 +71,7 @@ CKEDITOR.plugins.add('OCUpload', {
               jQuery('#queue-' + file.id).hide('fast', function(){
                 jQuery(this).remove();
               });
-              
+
               serverData = jQuery.trim(serverData);
               if (serverData.substring(0, 1) != '{') {
                 return alert(Drupal.t('Server response came not in JSON format') + ': "' + serverData + '"');
