@@ -149,6 +149,7 @@ function ocupload_form_template($form, &$form_state, $template = NULL) {
       !filepath     — ' . t('full path to file') . '<br />
       !filename     — ' . t('file name after upload') . '<br />
       !originalname — ' . t('original file name') . '<br />
+      !fileext      — ' . t('file extension') . '<br />
       !filesize     — ' . t('file size') . '<br />
       !text         — ' . t('selected text') . '<br />
     ',
@@ -422,6 +423,7 @@ function ocupload_upload() {
       '!filepath'     => _ocupload_get_local_url($filepath),
       '!filename'     => $file->filename,
       '!originalname' => basename($file->destination),
+      '!fileext'      => $extension_uploaded_file,
       '!filesize'     => format_size($file->destination),
       '!text'         => $selected_text,
     ));
