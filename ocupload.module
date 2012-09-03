@@ -142,7 +142,7 @@ function ocupload_form_alter(&$form, &$form_state, $form_id) {
  * Custom form submit. Change status uploaded files to "permanent".
  */
 function ocupload_change_files_status($form, &$form_state) {
-  $cid = 'ocupload:' . $form_state['values']['form_id'] . ':' . $GLOBALS['user']->uid;
+  $cid = 'ocupload:' . $form['#form_id'] . ':' . $GLOBALS['user']->uid;
   if ($cache = cache_get($cid)) {
     foreach ($cache->data as $field_name => $files) {
       $field_value = _ocupload_field_value_by_html_name($form_state, $field_name);
