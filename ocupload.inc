@@ -95,15 +95,6 @@ function ocupload_form_template($form, &$form_state, $template = NULL) {
     '#size' => 22,
     '#required' => TRUE,
   );
-  
-  $form['max_filesize'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Maximum upload size'),
-    '#default_value' => $template->max_filesize ? format_size($template->max_filesize) : 0,
-    '#description' => t('Enter a value like "512" (bytes), "80 KB" (kilobytes) or "50 MB" (megabytes) in order to restrict the allowed file size. If left empty the file sizes will be limited only by PHP\'s maximum post and file upload sizes (current limit <strong>%limit</strong>).', array('%limit' => format_size(file_upload_max_size()))) . ' ' . t('Limit except for the user #1') . '.',
-    '#size' => 10,
-    '#element_validate' => array('_ocupload_check_max_filesize'),
-  );
 
   if (module_exists('token')) {
     $form['token_help'] = array(
@@ -118,6 +109,15 @@ function ocupload_form_template($form, &$form_state, $template = NULL) {
       '#token_types' => array('user'),
     );
   }
+
+  $form['max_filesize'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Maximum upload size'),
+    '#default_value' => $template->max_filesize ? format_size($template->max_filesize) : 0,
+    '#description' => t('Enter a value like "512" (bytes), "80 KB" (kilobytes) or "50 MB" (megabytes) in order to restrict the allowed file size. If left empty the file sizes will be limited only by PHP\'s maximum post and file upload sizes (current limit <strong>%limit</strong>).', array('%limit' => format_size(file_upload_max_size()))) . ' ' . t('Limit except for the user #1') . '.',
+    '#size' => 10,
+    '#element_validate' => array('_ocupload_check_max_filesize'),
+  );
 
   $form['template'] = array(
     '#type' => 'textfield',
