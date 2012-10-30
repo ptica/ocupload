@@ -269,7 +269,7 @@ function ocupload_form_template($form, &$form_state, $template = NULL) {
 function ocupload_form_template_submit($form, &$form_state) {
   $template = array(
     'tid'             => $form_state['values']['tid'],
-    'mask'            => $form_state['values']['mask'],
+    'mask'            => str_replace(' ', '', $form_state['values']['mask']),
     'path'            => $form_state['values']['path'],
     'max_filesize'    => parse_size($form_state['values']['max_filesize']),
     'template'        => $form_state['values']['template'],
