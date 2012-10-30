@@ -8,6 +8,8 @@
  * Implements hook_menu().
  */
 function ocupload_menu() {
+  $items = array();
+  
   $items['admin/config/content/ocupload'] = array(
     'title' => 'One click upload',
     'description' => 'Configure module',
@@ -64,10 +66,8 @@ function ocupload_menu() {
 function ocupload_permission() {
   module_load_include('inc', 'ocupload');
 
-  $templates = ocupload_templates();
   $permissions = array();
-
-  foreach ($templates as $template) {
+  foreach (ocupload_templates() as $template) {
     $permissions['upload files use template ' . $template->tid] = array(
       'title' => t('Upload !extensions files', array('!extensions' => $template->mask)),
       'restrict access' => TRUE,
@@ -85,11 +85,14 @@ function ocupload_preprocess_html(&$vars) {
 
   $scripts = drupal_add_js();
   $item = menu_get_item();
-  $module_path = drupal_get_path('module', 'ocupload');
+  $module_path = _ocupload_get_path();
   $module_static_path = $module_path . '/static/';
   $ocupload_use = FALSE;
 
-  if (module_exists('bueditor') && (isset($scripts[drupal_get_path('module', 'bueditor') . '/bueditor.js']) || $item['path'] == 'admin/config/content/bueditor/%')) {
+  if (
+    module_exists('bueditor') &&
+    (isset($scripts[drupal_get_path('module', 'bueditor') . '/bueditor.js']) || $item['path'] == 'admin/config/content/bueditor/%')
+  ) {
     drupal_add_js($module_static_path . 'bueditor.js', array('weight' => 1));
     $ocupload_use = TRUE;
   }
@@ -106,10 +109,8 @@ function ocupload_preprocess_html(&$vars) {
   }
 
   if ($ocupload_use) {
-    $templates = ocupload_templates();
     $allowed_ext = array();
-
-    foreach ($templates as $template) {
+    foreach (ocupload_templates() as $template) {
       if (user_access('upload files use template ' . $template->tid)) {
         $allowed_ext = array_merge($allowed_ext, explode(',', $template->mask));
       }
@@ -118,12 +119,14 @@ function ocupload_preprocess_html(&$vars) {
     drupal_add_js('sites/all/libraries/swfupload/swfupload.js');
     drupal_add_js('sites/all/libraries/swfupload/plugins/swfupload.queue.js');
 
-    drupal_add_js(array('ocupload' => array(
-      'phpsessid'  => session_id(),
-      'sizeLimit'  => file_upload_max_size(),
-      'allowedExt' => '*.' . implode('; *.', $allowed_ext) . ';',
-      'modulePath' => $base_path . $module_path,
-    )), 'setting');
+    drupal_add_js(array(
+      'ocupload' => array(
+        'phpsessid'  => session_id(),
+        'sizeLimit'  => file_upload_max_size(),
+        'allowedExt' => '*.' . implode('; *.', $allowed_ext) . ';',
+        'modulePath' => $base_path . $module_path,
+      )
+    ), 'setting');
 
     drupal_add_css($module_static_path . 'styles.css');
   }
@@ -166,14 +169,21 @@ function ocupload_change_files_status($form, &$form_state) {
  * Return template object by tid.
  */
 function ocupload_template_load($tid) {
-  return db_select('ocupload_templates', 'bc')->fields('bc')->condition('bc.tid', $tid)->execute()->fetch();
+  return db_select('ocupload_templates', 'bc')
+    ->fields('bc')
+    ->condition('bc.tid', $tid)
+    ->execute()
+    ->fetch();
 }
 
 /**
  * Return all templates.
  */
 function ocupload_templates() {
-  return db_select('ocupload_templates', 'bc')->fields('bc')->execute()->fetchAllAssoc('tid');
+  return db_select('ocupload_templates', 'bc')
+    ->fields('bc')
+    ->execute()
+    ->fetchAllAssoc('tid');
 }
 
 /**
@@ -197,7 +207,7 @@ function ocupload_wysiwyg_plugin($editor, $version) {
     return array(
       'OCUpload' => array(
         'url' => 'http://drupal.org/project/ocupload',
-        'path' => drupal_get_path('module', 'ocupload') . '/static',
+        'path' => _ocupload_get_path() . '/static',
         'load' => TRUE,
         'buttons' => array('OCUpload' => t('One Click Upload')),
       )
@@ -213,7 +223,7 @@ function ocupload_ckeditor_plugin() {
     'ocupload' => array(
       'name' => 'OCUpload',
       'desc' => 'One Click Upload',
-      'path' => drupal_get_path('module', 'ocupload') . '/static/',
+      'path' => _ocupload_get_path() . '/static/',
       'buttons' => array(
         'OCUpload' => array(
           'icon' => 'button.png',
@@ -223,3 +233,11 @@ function ocupload_ckeditor_plugin() {
     ),
   );
 }
+
+/**
+ * Return module path
+ */
+function _ocupload_get_path() {
+  return drupal_get_path('module', 'ocupload');
+}
+

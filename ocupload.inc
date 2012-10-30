@@ -8,12 +8,8 @@
  * Admin page with templates list
  */
 function ocupload_config_page() {
-  $templates = ocupload_templates();
-  $table_header = array(t('Mask'), t('Operations'));
   $table_data = array();
-  $build = array();
-
-  foreach ($templates as $template) {
+  foreach (ocupload_templates() as $template) {
     $actions = array(
       l(t('edit'), 'admin/config/content/ocupload/edit/' . $template->tid),
       l(t('delete'), 'admin/config/content/ocupload/delete/' . $template->tid),
@@ -21,14 +17,14 @@ function ocupload_config_page() {
     $table_data[] = array($template->mask, implode(' | ', $actions));
   }
 
+  $build = array();
   $build['templates'] = array(
     '#theme' => 'table',
-    '#header' => $table_header,
+    '#header' => array(t('Mask'), t('Operations')),
     '#rows' => $table_data,
     '#prefix' => '<h3>' . t('Templates') . '</h3>',
     '#suffix' => '<br />',
   );
-
   $build['form'] = drupal_get_form('ocupload_form_settings');
   $build['form']['#prefix'] = '<h3>' . t('Options') . '</h3>';
 
@@ -52,8 +48,6 @@ function ocupload_form_settings($form, &$form_state) {
  * Form add/edit template
  */
 function ocupload_form_template($form, &$form_state, $template = NULL) {
-  $public_path = variable_get('file_public_path', conf_path() . '/files');
-
   if (!$template) {
     $template = (object)array(
       'tid' => 0,
@@ -86,6 +80,7 @@ function ocupload_form_template($form, &$form_state, $template = NULL) {
     '#required' => TRUE,
   );
 
+  $public_path = variable_get('file_public_path', conf_path() . '/files');
   $form['path'] = array(
     '#type' => 'textfield',
     '#title' => t('Upload path'),
@@ -322,12 +317,9 @@ function ocupload_delete_confirm($form, &$form_state, $template) {
  * Confirm form submit
  */
 function ocupload_delete_confirm_submit($form, &$form_state) {
-  if ($form_state['values']['confirm']) {
-    ocupload_template_delete($form_state['values']['tid']);
-    drupal_set_message(t('Deleted'));
-  }
-
-  drupal_goto('admin/config/content/ocupload');
+  ocupload_template_delete($form_state['values']['tid']);
+  drupal_set_message(t('Deleted'));
+  $form_state['redirect'] = 'admin/config/content/ocupload';
 }
 
 /**
@@ -338,12 +330,11 @@ function ocupload_upload() {
 
   _ocupload_auth();
 
-  $templates = ocupload_templates();
   $template = NULL;
   $extension_uploaded_file = _ocupload_get_file_extension($_FILES['files']['name']['file']);
   $selected_text = !empty($_POST['selectedText']) ? $_POST['selectedText'] : '';
 
-  foreach ($templates as $value) {
+  foreach (ocupload_templates() as $value) {
     if (in_array($extension_uploaded_file, explode(',', $value->mask)) && user_access('upload files use template ' . $value->tid)) {
       $template = $value;
       break;
@@ -441,7 +432,7 @@ function ocupload_upload() {
   }
   // If upload error
   else {
-    $errors = drupal_get_messages(null, TRUE);
+    $errors = drupal_get_messages(NULL, TRUE);
     $data = array();
     foreach ($errors as $error_per_type) {
       $data[] = strip_tags(implode("\n\n", $error_per_type));
@@ -502,12 +493,11 @@ function _ocupload_get_local_url($uri) {
  * Return image styles for use in #options
  */
 function _ocupload_get_image_styles($add_empty_option = TRUE) {
-  $image_styles = image_styles();
-  $image_style_options = $add_empty_option ? array('' => '<' . t('none') . '>') : array();
-  foreach ($image_styles as $name => $image_style) {
-    $image_style_options[$name] = $image_style['name'];
+  $options = $add_empty_option ? array('' => '<' . t('none') . '>') : array();
+  foreach (image_styles() as $name => $image_style) {
+    $options[$name] = $image_style['name'];
   }
-  return $image_style_options;
+  return $options;
 }
 
 /**
