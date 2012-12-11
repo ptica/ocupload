@@ -35,10 +35,10 @@ Integrate to standalone CKEditor 7.x-1.4+ (not Wysiwyg module):
 
 Integrate to CKEditor with Wysiwyg:
 -----------------------------------
-1. Open Wysiwyg cofig page admin/config/content/wysiwyg.
+1. Open Wysiwyg cofig page "admin/config/content/wysiwyg".
 
-2. Click  Edit link for your use editor.
+2. Click "Edit" link for your use editor.
 
-3. Open fieldset Buttons and plugins and mark checkbox One Click UPload.
+3. Open fieldset "Buttons and plugins" and mark checkbox "One Click UPload".
 
-4. Click Save.
+4. Click "Save".

@@ -64,6 +64,7 @@ BUE.postprocess.ocupload = function(E, $) {
           },
           // after upload one file
           upload_success_handler: function(file, serverData) {
+            serverData = jQuery.trim(serverData);
             if (serverData.substring(0, 1) != '{') {
               return alert(Drupal.t('Server response came not in JSON format') + ': "' + serverData + '"');
             }
@@ -87,7 +88,9 @@ BUE.postprocess.ocupload = function(E, $) {
           }
         });
         
-        $button.parent().mousedown(function(event){ event.stopPropagation(); });
+        $button.parent().mousedown(function(event){
+          event.stopPropagation();
+        });
       });
       
       if ($button.attr('type') != 'image') {
