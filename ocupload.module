@@ -96,7 +96,7 @@ function ocupload_preprocess_html(&$vars) {
     drupal_add_js($module_static_path . 'bueditor.js', array('weight' => 1));
     $ocupload_use = TRUE;
   }
-  elseif (module_exists('ckeditor') && isset($scripts[ckeditor_path() . '/ckeditor.js'])) {
+  elseif (module_exists('ckeditor') && isset($scripts[ckeditor_path('url') . '/ckeditor.js'])) {
     $ocupload_use = TRUE;
   }
   elseif (module_exists('wysiwyg')) {
