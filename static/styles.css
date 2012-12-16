@@ -12,11 +12,11 @@
   padding-left: .5em;
 }
 
-.cke_editor .ocupload-processed {
+.cke_top .ocupload-processed {
   position: relative;
 }
 
-.cke_editor .ocupload-processed object {
+.cke_top .ocupload-processed object {
   width: 20px;
   height: 20px;
   margin: 0;

@@ -21,7 +21,7 @@ CKEDITOR.plugins.add('OCUpload', {
         return;
       }
 
-      jQuery('.cke_button_OCUpload:not(.ocupload-processed)').each(function(i) {
+      jQuery('.cke_button_OCUpload:not(.ocupload-processed), .cke_button__ocupload:not(.ocupload-processed)').each(function(i) {
         var $this = jQuery(this);
         var $textarea = $this.parents('.form-item').find('textarea');
         var $editorWrapper = $textarea.next();
@@ -29,7 +29,7 @@ CKEDITOR.plugins.add('OCUpload', {
         var swfu = new SWFUpload({
           flash_url                : Drupal.settings.basePath + 'sites/all/libraries/swfupload/Flash/swfupload.swf',
           upload_url               : Drupal.settings.basePath + 'ocupload/upload',
-          button_placeholder_id    : $this.find('.cke_label').attr('id'),
+          button_placeholder_id    : $this.find('.cke_label, .cke_button_label').attr('id'),
           file_size_limit          : Drupal.settings.ocupload.sizeLimit + ' B',
           file_types               : Drupal.settings.ocupload.allowedExt,
           file_types_description   : Drupal.t('Files'),
@@ -97,7 +97,7 @@ CKEDITOR.plugins.add('OCUpload', {
         });
 
         $this.mousedown(function(event){ event.stopPropagation(); });
-        $this.addClass('ocupload-processed').css('opacity', 0.9);
+        $this.addClass('ocupload-processed');
       });
     });
   }
