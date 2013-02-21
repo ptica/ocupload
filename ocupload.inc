@@ -378,8 +378,8 @@ function ocupload_upload() {
 
     // If upload image and template image style not empty
     if ($selected_text == '' && _ocupload_is_image($file->filename) && $template->image_style && module_exists('image')) {
-      $filepath = image_style_path($template->image_style, $file->uri);
-
+      $filepath = image_style_url($template->image_style, $file->uri);
+      
       if ($template->link_to_original) {
         $wrap_template = TRUE;
         if ($template->link_only_big) {
@@ -396,7 +396,7 @@ function ocupload_upload() {
         if ($wrap_template) {
           $original_image_uri = $file->uri;
           if ($template->image_style_original) {
-            $original_image_uri = image_style_path($template->image_style_original, $original_image_uri);
+            $original_image_uri = image_style_url($template->image_style_original, $original_image_uri);
           }
           $attributes = array(
             'href' => _ocupload_get_local_url($original_image_uri),
