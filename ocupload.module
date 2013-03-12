@@ -125,6 +125,7 @@ function ocupload_preprocess_html(&$vars) {
         'sizeLimit'  => file_upload_max_size(),
         'allowedExt' => '*.' . implode('; *.', $allowed_ext) . ';',
         'modulePath' => $base_path . $module_path,
+        'uploadPath' => url('ocupload/upload'),
       )
     ), 'setting');
 

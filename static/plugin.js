@@ -28,7 +28,7 @@ CKEDITOR.plugins.add('OCUpload', {
 
         var swfu = new SWFUpload({
           flash_url                : Drupal.settings.basePath + 'sites/all/libraries/swfupload/Flash/swfupload.swf',
-          upload_url               : Drupal.settings.basePath + 'ocupload/upload',
+          upload_url               : Drupal.settings.ocupload.uploadPath,
           button_placeholder_id    : $this.find('.cke_label, .cke_button_label').attr('id'),
           file_size_limit          : Drupal.settings.ocupload.sizeLimit + ' B',
           file_types               : Drupal.settings.ocupload.allowedExt,
