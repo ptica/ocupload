@@ -46,7 +46,9 @@ CKEDITOR.plugins.add('OCUpload', {
             var selection = CKEDITOR.instances[$textarea.attr('id')].getSelection();
             var selectedText = '';
             if (selection) {
-              selectedText = !jQuery.browser.msie ? selection.getNative().toString() : selection.getNative().createRange().text;
+              selectedText = jQuery.browser.msie && parseInt(jQuery.browser.version, 10) < 10
+                ? selection.getNative().createRange().text
+                : selection.getNative().toString();
             }
 
             swfu.addPostParam('selectedText', selectedText);
@@ -81,7 +83,7 @@ CKEDITOR.plugins.add('OCUpload', {
               var element = CKEDITOR.dom.element.createFromHtml(response.data);
               setTimeout(function(){
                 CKEDITOR.instances[$textarea.attr('id')].insertElement(element);
-              }, jQuery.browser.msie ? 400 : 0); // fix msie render bug
+              }, jQuery.browser.msie ? 800 : 0); // fix msie render bug
             }
             else {
               alert(response.data);
