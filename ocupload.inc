@@ -198,7 +198,7 @@ function ocupload_form_template($form, &$form_state, $template = NULL) {
         )
       ),
     );
-    
+
     $form['image_settings']['use_image_style_original'] = array(
       '#type' => 'checkbox',
       '#title' => t('Use image style for original image'),
@@ -209,7 +209,7 @@ function ocupload_form_template($form, &$form_state, $template = NULL) {
         )
       ),
     );
-    
+
     $form['image_settings']['image_style_original'] = array(
       '#type' => 'select',
       '#title' => t('Image style for original image'),
@@ -221,7 +221,7 @@ function ocupload_form_template($form, &$form_state, $template = NULL) {
         ),
       ),
     );
-    
+
     $form['image_settings']['max_dimensions'] = array(
       '#type' => 'textfield',
       '#title' => 'Maximum image resolution',
@@ -340,7 +340,7 @@ function ocupload_upload() {
       break;
     }
   }
-  
+
   if (!$template) {
     return _ocupload_answer(FALSE, t('This file type can not be upload'));
   }
@@ -358,7 +358,7 @@ function ocupload_upload() {
       $validators['file_validate_image_resolution'] = array($template->max_dimensions);
     }
   }
-  
+
   $destination = 'public://' . token_replace($template->path, array('user' => $user));
   file_prepare_directory($destination, FILE_CREATE_DIRECTORY);
   $file = file_save_upload('file', $validators, $destination);
@@ -379,7 +379,7 @@ function ocupload_upload() {
     // If upload image and template image style not empty
     if ($selected_text == '' && _ocupload_is_image($file->filename) && $template->image_style && module_exists('image')) {
       $filepath = image_style_url($template->image_style, $file->uri);
-      
+
       if ($template->link_to_original) {
         $wrap_template = TRUE;
         if ($template->link_only_big) {
@@ -393,8 +393,8 @@ function ocupload_upload() {
           image_style_transform_dimensions($template->image_style, $styled_image_dimensions);
 
           if (
-            $image_info['width'] < $styled_image_dimensions['width'] &&
-            $image_info['height'] < $styled_image_dimensions['height']
+            $image_info['width'] <= $styled_image_dimensions['width'] &&
+            $image_info['height'] <= $styled_image_dimensions['height']
           ) {
             $wrap_template = FALSE;
           }

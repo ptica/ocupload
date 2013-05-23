@@ -241,4 +241,3 @@ function ocupload_ckeditor_plugin() {
 function _ocupload_get_path() {
   return drupal_get_path('module', 'ocupload');
 }
-
