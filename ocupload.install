@@ -129,7 +129,7 @@ function ocupload_install() {
       'link_to_original' => 1,
       'link_only_big' => 1,
       'show_in_colorbox' => module_exists('colorbox') ? 1 : 0,
-      'rename_file' => 1,
+      'rename_file' => 0,
     ),
     array(
       'mask' => 'rar,zip,doc,xls',

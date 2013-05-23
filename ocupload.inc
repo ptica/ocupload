@@ -61,7 +61,7 @@ function ocupload_form_template($form, &$form_state, $template = NULL) {
       'link_to_original' => 0,
       'link_only_big' => 0,
       'max_dimensions' => '',
-      'rename_file' => 1,
+      'rename_file' => 0,
     );
     drupal_set_title(t('Add template'));
   }
