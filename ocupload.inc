@@ -161,7 +161,7 @@ function ocupload_form_template($form, &$form_state, $template = NULL) {
     $form['image_settings']['image_style'] = array(
       '#type' => 'select',
       '#title' => t('Use image style'),
-      '#options' => _ocupload_get_image_styles(),
+      '#options' => image_style_options(),
       '#default_value' => $template->image_style,
     );
 
@@ -213,7 +213,7 @@ function ocupload_form_template($form, &$form_state, $template = NULL) {
     $form['image_settings']['image_style_original'] = array(
       '#type' => 'select',
       '#title' => t('Image style for original image'),
-      '#options' => _ocupload_get_image_styles(FALSE),
+      '#options' => image_style_options(FALSE),
       '#default_value' => $template->image_style_original,
       '#states' => array(
         'visible' => array(
@@ -490,17 +490,6 @@ function _ocupload_get_local_url($uri) {
 }
 
 /**
- * Return image styles for use in #options
- */
-function _ocupload_get_image_styles($add_empty_option = TRUE) {
-  $options = $add_empty_option ? array('' => '<' . t('none') . '>') : array();
-  foreach (image_styles() as $name => $image_style) {
-    $options[$name] = $image_style['name'];
-  }
-  return $options;
-}
-
-/**
  * Return TRUE if file extension equal jpg,gif,png,bmp
  */
 function _ocupload_is_image($filename) {
@@ -524,4 +513,3 @@ function _ocupload_check_max_filesize($element, &$form_state) {
     form_error($element, t('The "!name" option must contain a valid value. You may either leave the text field empty or enter a string like "512" (bytes), "80 KB" (kilobytes) or "50 MB" (megabytes).', array('!name' => t($element['title']))));
   }
 }
-
