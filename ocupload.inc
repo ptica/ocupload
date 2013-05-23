@@ -384,12 +384,18 @@ function ocupload_upload() {
         $wrap_template = TRUE;
         if ($template->link_only_big) {
           $image_style = image_style_load($template->image_style);
-          $image_style_effects = current($image_style['effects']);
-          $image_style_width = isset($image_style_effects['data']['width']) ? $image_style_effects['data']['width'] : 0;
-          $image_style_height = isset($image_style_effects['data']['height']) ? $image_style_effects['data']['height'] : 0;
           $image_info = image_get_info($file->uri);
+          $styled_image_dimensions = array(
+            'width' => $image_info['width'],
+            'height' => $image_info['height'],
+          );
 
-          if (!(($image_style_width > 0 && $image_info['width'] > $image_style_width) || ($image_style_height > 0 && $image_info['height'] > $image_style_height))) {
+          image_style_transform_dimensions($template->image_style, $styled_image_dimensions);
+
+          if (
+            $image_info['width'] < $styled_image_dimensions['width'] &&
+            $image_info['height'] < $styled_image_dimensions['height']
+          ) {
             $wrap_template = FALSE;
           }
         }
