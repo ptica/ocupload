@@ -42,7 +42,7 @@ function drush_ocupload_dl_library() {
   }
 
   // Decompress the zip archive
-  drush_shell_exec("tar -xf %s -C %s", $filename, $path);
+  drush_tarball_extract($filename, $path);
   // Remove the zip archive
   drush_op('unlink', $filename);
   // Rename extracted dir
