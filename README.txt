@@ -18,7 +18,7 @@ Integrate to BUEditor:
 4. Click "Save configuration".
 
 
-Integrate to standalone CKEditor 7.x-1.4+ (not Wysiwyg module):
+Integrate to standalone CKEditor 7.x-1.11+ (not Wysiwyg module):
 ---------------------------------------------------------------
 1. Open CKEditor config page "admin/config/content/ckeditor".
 
@@ -33,7 +33,7 @@ Integrate to standalone CKEditor 7.x-1.4+ (not Wysiwyg module):
 6. Clear your browser cache.
 
 
-Integrate to CKEditor with Wysiwyg:
+Integrate to Wysiwyg module with CKEditor:
 -----------------------------------
 1. Open Wysiwyg cofig page "admin/config/content/wysiwyg".
 

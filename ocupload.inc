@@ -418,8 +418,8 @@ function ocupload_upload() {
 
     $data = strtr($cur_template, array(
       '!filepath'     => _ocupload_get_local_url($filepath),
-      '!filename'     => $file->filename,
-      '!originalname' => basename($file->destination),
+      '!filename'     => drupal_basename($file->uri),
+      '!originalname' => $file->filename,
       '!fileext'      => $extension_uploaded_file,
       '!filesize'     => format_size($file->destination),
       '!text'         => $selected_text,
@@ -430,7 +430,7 @@ function ocupload_upload() {
       if ($cache = cache_get($cid)) {
         $files = $cache->data;
       }
-      $files[check_plain($_POST['fieldName'])][$file->fid] = $file->filename;
+      $files[check_plain($_POST['fieldName'])][$file->fid] = drupal_basename($file->uri);
       cache_set($cid, $files, 'cache', REQUEST_TIME + DRUPAL_MAXIMUM_TEMP_FILE_AGE);
     }
 

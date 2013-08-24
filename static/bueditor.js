@@ -2,42 +2,34 @@ BUE.postprocess.ocupload = function(E, $) {
   E.showFileSelectionDialog = function () {
     alert(Drupal.t('Error while module initialize.'));
   }
-  
+
   for (var i = 0; i < E.tpl.buttons.length; i++) {
     if (E.tpl.buttons[i][1] == 'js: E.showFileSelectionDialog();') {
       var $button = $('#bue-' + E.index + '-button-' + i);
-      
-      $button.load(function() {
-        var buttonWidth = $button.width();
-        var buttonHeight = $button.height();
 
+      $button.load(function() {
         if (Drupal.settings.ocupload.allowedExt == '*.;') {
           $button.remove();
           return;
         }
 
-        var $wrapper = $('<span class="ocupload-button-wrapper bue-button"></span>').css({
-          width: buttonWidth,
-          height: buttonHeight
-        });
+        var $buttonClone = $button.clone();
+        $buttonClone.css('visibility', 'hidden').appendTo('body');
+        var buttonWidth = $buttonClone.outerWidth();
+        var buttonHeight = $buttonClone.outerHeight();
+        $buttonClone.remove();
 
-        if ($button.hasClass('bue-sprite-button')) {
-          $wrapper.css({
-            'background-image'    : $button.css('background-image'),
-            'background-position' : $button.css('background-position')
-          })
-        }
-        else {
-          $wrapper.css('background', 'url(' + $button.attr('src') + ') no-repeat center center')
-        }
-
+        var $wrapper = $('<span class="ocupload-button-wrapper"></span>');
         $button.wrap($wrapper);
         $button.closest('.bue-ui').append('<span id="ocupload-progress-' + E.index + '" class="ocupload-progress"></span>');
-        
+
+        var $placeholder = $('<input type="button" />');
+        $placeholder.insertBefore($button);
+
         var swfu = new SWFUpload({
           flash_url              : Drupal.settings.basePath + 'sites/all/libraries/swfupload/Flash/swfupload.swf',
           upload_url             : Drupal.settings.ocupload.uploadPath,
-          button_placeholder_id  : $button.attr('id'),
+          button_placeholder     : $placeholder.get(0),
           file_size_limit        : Drupal.settings.ocupload.sizeLimit + ' B',
           file_types             : Drupal.settings.ocupload.allowedExt,
           file_types_description : Drupal.t('Files'),
@@ -48,21 +40,20 @@ BUE.postprocess.ocupload = function(E, $) {
           button_width           : buttonWidth,
           button_height          : buttonHeight,
           button_cursor          : SWFUpload.CURSOR.HAND,
-          button_text            : $button.attr('type') == 'button' ? $button.val() : '',
           file_post_name         : 'files[file]',
           post_params            : {'phpsessid':Drupal.settings.ocupload.phpsessid},
-          // after files select
+          // After files select
           file_dialog_complete_handler: function() {
             swfu.addPostParam('selectedText', BUE.active.getSelection());
             swfu.addPostParam('formId', $('textarea[name="' + E.textArea.name + '"]').closest('form').find('input[name="form_id"]').val());
             swfu.addPostParam('fieldName', E.textArea.name);
             this.startUpload();
           },
-          // start upload one file in queue
+          // Start upload one file in queue
           upload_start_handler: function(file) {
-            $('#ocupload-progress-' + E.index).html('Uploading ' + file.name);
+            $('#ocupload-progress-' + E.index).html(Drupal.t('Uploading @filename', {'@filename':file.name}));
           },
-          // after upload one file
+          // After upload one file
           upload_success_handler: function(file, serverData) {
             serverData = jQuery.trim(serverData);
             if (serverData.substring(0, 1) != '{') {
@@ -77,26 +68,26 @@ BUE.postprocess.ocupload = function(E, $) {
             }
             BUE.active.focus();
           },
-          // after upload all files
+          // After upload all files
           queue_complete_handler: function() {
             $('#ocupload-progress-' + E.index).html('');
           },
-          // error during upload
+          // Error during upload
           upload_error_handler: function(file, errorCode, message) {
             alert('Error ' + errorCode + ': ' + message);
             $('#ocupload-progress-' + E.index).html('');
           }
         });
-        
+
         $button.parent().mousedown(function(event){
           event.stopPropagation();
         });
       });
-      
+
       if ($button.attr('type') != 'image') {
         $button.load();
       }
-      
+
       break;
     }
   }
