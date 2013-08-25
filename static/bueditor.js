@@ -1,6 +1,6 @@
 BUE.postprocess.ocupload = function(E, $) {
   E.showFileSelectionDialog = function () {
-    alert(Drupal.t('Error while module initialize.'));
+    alert(Drupal.t('Module initialization error.'));
   }
 
   for (var i = 0; i < E.tpl.buttons.length; i++) {

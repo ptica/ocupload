@@ -41,7 +41,7 @@ CKEDITOR.plugins.add('OCUpload', {
           button_height            : 20,
           file_post_name           : 'files[file]',
           post_params              : {'phpsessid':Drupal.settings.ocupload.phpsessid},
-          // after files select
+          // After files select
           file_dialog_complete_handler: function() {
             var selection = CKEDITOR.instances[$textarea.attr('id')].getSelection();
             var selectedText = '';
@@ -56,7 +56,7 @@ CKEDITOR.plugins.add('OCUpload', {
             swfu.addPostParam('fieldName', $textarea.attr('name'));
             this.startUpload();
           },
-          // file added in queue
+          // File added in queue
           file_queued_handler: function(file) {
             var $queue = jQuery('#swfupload-queue');
             if ($queue.length == 0) {
@@ -64,11 +64,11 @@ CKEDITOR.plugins.add('OCUpload', {
             }
             $queue.prepend('<div id="queue-' + file.id + '">' + file.name + '</div>');
           },
-          // start upload one file in queue
+          // Start upload one file in queue
           upload_start_handler: function(file) {
             jQuery('#queue-' + file.id).css({'background':'url(' + Drupal.settings.basePath + 'misc/progress.gif) repeat-x 0 center', 'color':'white'});
           },
-          // after upload one file
+          // After upload one file
           upload_success_handler: function(file, serverData) {
             jQuery('#queue-' + file.id).hide('fast', function(){
               jQuery(this).remove();
@@ -89,7 +89,7 @@ CKEDITOR.plugins.add('OCUpload', {
               alert(response.data);
             }
           },
-          // error during upload
+          // Error during upload
           upload_error_handler: function(file, errorCode, message) {
             alert('Error ' + errorCode + ': ' + message);
             jQuery('#queue-' + file.id).hide('fast', function(){
