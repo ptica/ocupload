@@ -108,7 +108,7 @@ function ocupload_form_template($form, &$form_state, $template = NULL) {
   $form['max_filesize'] = array(
     '#type' => 'textfield',
     '#title' => t('Maximum upload size'),
-    '#default_value' => $template->max_filesize ? format_size($template->max_filesize) : 0,
+    '#default_value' => $template->max_filesize ? format_size($template->max_filesize, 'en') : 0,
     '#description' => t('Enter a value like "512" (bytes), "80 KB" (kilobytes) or "50 MB" (megabytes) in order to restrict the allowed file size. If left empty the file sizes will be limited only by PHP\'s maximum post and file upload sizes (current limit <strong>%limit</strong>).', array('%limit' => format_size(file_upload_max_size()))) . ' ' . t('Limit except for the user #1') . '.',
     '#size' => 10,
     '#element_validate' => array('_ocupload_check_max_filesize'),
