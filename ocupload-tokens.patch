@@ -1,0 +1,11 @@
+--- ocupload.inc.orig	2013-06-27 15:22:52.000000000 +0200
++++ ocupload.inc	2013-06-27 15:23:59.000000000 +0200
+@@ -374,6 +374,8 @@
+     }
+ 
+     $cur_template = $selected_text ? $template->template_select : $template->template;
++    // patch by ptacek: support tokens in html template
++    $cur_template = token_replace($cur_template, array('user' => $user));
+     $filepath = $file->uri;
+ 
+     // If upload image and template image style not empty

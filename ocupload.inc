@@ -374,6 +374,8 @@ function ocupload_upload() {
     }
 
     $cur_template = $selected_text ? $template->template_select : $template->template;
+    // patch by ptacek: support tokens in html template
+    $cur_template = token_replace($cur_template, array('user' => $user));
     $filepath = $file->uri;
 
     // If upload image and template image style not empty
